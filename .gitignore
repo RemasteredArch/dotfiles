@@ -1,0 +1,5 @@
+# tracked in seperate repos... not worth messing with git submodules for these
+# * https://github.com/RemasteredArch/nvim-config
+# * https://github.com/RemasteredArch/tmux-config
+/nvim-config
+/tmux-config
