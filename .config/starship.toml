@@ -21,7 +21,7 @@ palette = 'catppuccin_mocha'
 success_symbol = '[\$](bold green)'
 
 [directory]
-truncation_length = 15
+truncation_length = 5
 truncation_symbol = '.../'
 style = 'bold lavender'
 
