@@ -1,0 +1,40 @@
+#! /bin/env bash
+
+# General aliases
+
+alias ..="cd .."
+alias cdp="cd -P ." # Resolve symlinks in the current working path
+alias cls="clear"
+alias clsa="clear; lsa"
+alias :q="exit"
+alias su="sudo -i"
+alias hg="history | grep"
+alias relog='sudo login -p $(whoami); exit'
+
+# Program-specific aliases
+
+## Detect if a program or alias exists
+has() {
+  [ "$(type "$1" 2> /dev/null)" ]
+}
+
+## Neovim
+has nvim && alias nv="nvim"
+
+## Eza
+has eza && {
+  alias ls="eza --oneline --group-directories-first"
+  alias lsa="ls --long --all --header --smart-group"
+  alias tree="ls --tree"
+  alias treea="lsa --tree"
+}
+
+## sl
+has sl && {
+  alias sl="sl -e"
+  has lsa && alias las="sl"
+  has clsa && alias csla="sl"
+}
+
+## Batcat
+has batcat && alias bat="batcat"

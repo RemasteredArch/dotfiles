@@ -1,6 +1,6 @@
 # Dotfiles
 
-A collection of my miscellaneous configuration files.
+A collection of my miscellaneous configuration files. Designed for Ubuntu 24.04 [on WSL](https://apps.microsoft.com/detail/9nz3klhxdjp5).
 
 Organized as if it will be copied directly to `$HOME`, such as with [GNU Stow](https://www.gnu.org/software/stow/). If you use an unusual `$XDG_CONFIG_HOME`, you'll have to adjust `.config/` to that directory as necessary.
 
@@ -9,7 +9,8 @@ Organized as if it will be copied directly to `$HOME`, such as with [GNU Stow](h
 I organize some other configurations under their own repositories:
 * My Neovim configuration, available at [`nvim-config`](https://github.com/RemasteredArch/nvim-config) (maps to `~/.config/nvim/`)
 * My tmux configuration, available at [`tmux-config`](https://github.com/RemasteredArch/tmux-config) (maps to `~/.config/tmux/`)
+* My update script, available at [`Updater`](https://github.com/RemasteredArch/Updater)
 
 ## License
 
-Dotfiles is licensed under the GNU Affero General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU Affero General Public License along with dotfiles, found in [LICENSE](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.
+Dotfiles is licensed under the GNU Affero General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU Affero General Public License along with dotfiles, found in [`LICENSE`](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.
