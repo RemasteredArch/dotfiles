@@ -42,3 +42,8 @@ export PATH="$user_bin_dir:$PATH"
 
 # Set default text editor to Neovim
 has nvim && export EDITOR="nvim"
+
+# Set XDG user directories
+XDG_CONFIG_HOME="$HOME/.config"
+[ -d "$XDG_CONFIG_HOME" ] || mkdir -p "$XDG_CONFIG_HOME"
+export XDG_CONFIG_HOME
