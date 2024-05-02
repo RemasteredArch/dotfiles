@@ -1,7 +1,16 @@
-# tracked in seperate repos... not worth messing with git submodules for these
+# Other confings
+# Tracked in seperate repos... not worth messing with git submodules for these
 # * https://github.com/RemasteredArch/nvim-config
 # * https://github.com/RemasteredArch/tmux-config
+# * https://github.com/RemasteredArch/Updater
 /nvim-config
 /tmux-config
 /Updater
+
+# GTK theme
+# Not tracked until I have the setup better organized
+# * This will probably wait until I use Linux as my desktop OS
+#
+# In the meantime, I'm using Catppuccin Mocha blue
+# * https://github.com/catppuccin/gtk 
 /.themes
