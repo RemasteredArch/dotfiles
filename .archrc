@@ -16,12 +16,15 @@ set_color() {
   ansi_control_code=$2
 
   colors[$color_name]="\e[${ansi_control_code}m"
+
+  unset color_name ansi_control_code
 }
 
 declare -A colors
 set_color reset 0
 set_color bold 1
 set_color green 32
+unset set_color
 
 # Set default prompt
 PS1="\[${colors[green]}\]\$ \u @ \H > \w > \[${colors[reset]}\]"
@@ -36,6 +39,7 @@ bind 'set completion-ignore-case on'
 user_bin_dir="$HOME/.local/bin"
 [ -d "$user_bin_dir" ] || mkdir -p "$user_bin_dir"
 export PATH="$user_bin_dir:$PATH"
+unset user_bin_dir
 
 # Enable various aliases
 [ -f "$source/.arch_aliases" ] && . "$source/.arch_aliases"
@@ -47,3 +51,9 @@ has nvim && export EDITOR="nvim"
 XDG_CONFIG_HOME="$HOME/.config"
 [ -d "$XDG_CONFIG_HOME" ] || mkdir -p "$XDG_CONFIG_HOME"
 export XDG_CONFIG_HOME
+
+# GPG signing passphrase prompt
+GPG_TTY=$(tty)
+export GPG_TTY
+
+unset source colors
