@@ -12,6 +12,9 @@
 #
 # You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
 
+script_source_dir=$(dirname "$0")
+install_script_dir="$script_source_dir"
+
 text_reset="\e[0m"
 text_bold="\e[97m\e[100m\e[1m" # bold white text on a gray background
 
@@ -40,13 +43,21 @@ sudo snap refresh
 
 announce "Installing various packages"
 declare -A packages
-packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck"
-packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf"
-packages[fun]="sl"
+packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essentials"
+packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf xeyes mesa-utils htop btop screen"
+packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
+packages[fun]="sl neofetch"
 packages[wsl]="wslu"
 # shellcheck disable=SC2086
-sudo apt install ${packages[dev_tools]} ${packages[utilities]} ${packages[fun]} ${packages[wsl]}
+sudo apt install ${packages[dev_tools]} \
+  ${packages[utilities]} \
+  ${packages[theming]} \
+  ${packages[fun]} \
+  ${packages[wsl]}
 unset packages
+
+announce "Setting up virtualization"
+"$install_script_dir/virtualization_setup.sh"
 
 announce "Installing various snaps"
 sudo snap install shellcheck
@@ -70,6 +81,7 @@ announce "Installing neovim"
 sudo add-apt-repository ppa:neovim-ppa/unstable \
 && sudo apt update \
 && sudo apt install neovim
+nvim --headless "+Lazy! sync" +qa
 
 announce "Installing GitHub CLI"
 sudo mkdir -p -m 755 /etc/apt/keyrings \
@@ -141,3 +153,5 @@ announce "Authenticate Git credentials using: gh auth login"
 announce "WARNING: GitHub CLI will store credentials in plain text if gnome-keyring is not set up."
 echo "If gnome-keyring is not already set up, use the following script to set it up:"
 echo "  $development_dir/dotfiles/scripts/dotfiles/gnome_keyring_setup.sh"
+# TODO: setup gnome-keyring for git commit signing
+# ~/.gnupg/gpg-agent.conf
