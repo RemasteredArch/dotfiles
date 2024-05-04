@@ -39,37 +39,41 @@ list() {
 
 
 # Configs
+## TODO: read from file
 
 announce "Reading configs and fetching installed packages"
 
 declare -A dirs
 dirs[virtualization]="$HOME/virt"
 dirs[iso_images]="${dirs[virtualization]}/images"
+dirs[mount]="${dirs[virtualization]}/mnt"
 dirs[disks]="${dirs[virtualization]}/disks"
 
 ## Direct links for Ubuntu can be easily gotten from https://www.releases.ubuntu.com/
 declare -A iso
-iso[download]=false # does NOT work! how do i do booleans in POSIX/Bash?
+iso[download]="false"
 iso[url]="https://www.releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso"
 iso[file_name]="ubuntu-24.04-live-server-amd64.iso"
+iso[path]="${dirs[iso_images]}/${iso[file_name]}"
+iso[mount_point]="${dirs[mount]}/${iso[file_name]}"
 
 declare -A disk
 disk[file_name]="ubuntu.qcow"
 disk[size]="10G"
 disk[format]="qcow2"
+disk[path]="${dirs[disks]}/${disk[file_name]}"
 
 declare -A vm
-vm[command]="qemu-system-x86_64"
+vm[install]="true" # whether to load install ISO image and set appropriate boot parameters
+vm[command]="qemu-system-x86_64" # replaces with `kvm`?
 vm[name]="ubuntu-vm"
-vm[screen_name]="qemu-${vm[name]}"
 vm[memory]="4G"
 vm[aio]="io_uring" # threads, native, or io_uring
-vm[serial_output]=$(tty)
 
 declare -A packages
 packages[cpu-checker]="cpu-checker"
 packages[installed]=$(apt list --installed | grep --only-matching '^.*/' | sed 's/.$//')
-packages[list]="qemu-kvm bridge-utils libvirt-clients libvirt-daemon screen"
+packages[list]="qemu-kvm bridge-utils libvirt-clients libvirt-daemon"
 
 if [ "$(uname -m)" = "x86_64" ]; then
   packages[qemu]="qemu-system-x86"
@@ -132,7 +136,7 @@ created="false"
 
 for dir in "${dirs[@]}"; do
   [ -d "$dir" ] || {
-    mkdir -p "${dirs[virtualization]}" "${dirs[iso_images]}" "${dirs[disks]}"
+    mkdir -p "${dirs[virtualization]}" "${dirs[iso_images]}" "${dirs[disks]}" "${dirs[mount]}"
 
     echo "Created"
     list "${dirs[*]}"
@@ -147,7 +151,7 @@ done
 
 announce "Downloading install image"
 
-if [ "${iso[download]}" = true ]; then
+if [ "${iso[download]}" = "true" ]; then
   cd "${dirs[iso_images]}" || exit
 
   if [ -f "${iso[file_name]}" ]; then
@@ -177,24 +181,39 @@ else
 fi
 
 
+announce "Mounting install disk and setting install-specific boot parameters"
+
+if [ "${vm[install]}" = "true" ]; then
+  echo 'If you have already installed to the virtual disk, or would otherwise like to not load the install ISO image, please edit this script to set vm[install]="false"'
+
+  mkdir "${iso[mount_point]}"
+  sudo mount -r "${iso[path]}" "${iso[mount_point]}"
+
+  install_params=(
+    '-cdrom' "${dirs[iso_images]}/${iso[file_name]}"
+    '-kernel' "${iso[mount_point]}/casper/vmlinuz"
+    '-initrd' "${iso[mount_point]}/casper/initrd"
+    '-append' 'console=ttyS0')
+
+else
+  echo "Skipping install steps as per config"
+
+fi
+
+
 announce "Starting VM"
 
 cd "${dirs[virtualization]}" || exit
 
-echo "This will open in an instance of GNU Screen named ${vm[screen_name]}"
-echo "Use <^a d> (ctrl+a d) to detatch (exit), and screen -r ${vm[screen_name]} to reattach"
-read -rp "Hit enter to begin startup"
+echo "This will output to stdio (directly to the terminal)"
+read -rp 'Hit enter to begin startup'
 
-screen -S "${vm[screen_name]}" -- sudo "${vm[command]}" \
+sudo "${vm[command]}" \
   -cpu host \
   -accel kvm \
   -m "${vm[memory]}" \
   -name "${vm[name]}" \
-  -drive "file=${dirs[disks]}/${disk[file_name]},media=disk,aio=${vm[aio]},format=qcow2" \
-  -cdrom "${dirs[iso_images]}/${iso[file_name]}" \
+  -drive "file=${disk[path]},media=disk,aio=${vm[aio]},format=qcow2" \
   -nographic \
-  -display none \
-  -serial "${vm[serial_output]}" \
-  -runas "$(whoami)"
-  # -nic -netdev
-  # are -display and -nographic redundant?
+  -runas "$(whoami)" \
+  "${install_params[@]}"
