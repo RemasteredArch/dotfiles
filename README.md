@@ -13,4 +13,4 @@ I organize some other configurations under their own repositories:
 
 ## License
 
-Dotfiles is licensed under the GNU Affero General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU Affero General Public License along with dotfiles, found in [`LICENSE`](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.
+Dotfiles is licensed under the GNU General Public License version 3, or (at your option) any later version. You should have received a copy of the GNU General Public License along with dotfiles, found in [`LICENSE`](./LICENSE). If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>.

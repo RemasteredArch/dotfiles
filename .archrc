@@ -1,5 +1,19 @@
 #! /bin/env bash
 
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Copyright © 2024 RemasteredArch
+#
+# This file is part of dotfiles.
+#
+# Dotfiles is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# Dotfiles is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
+
+# .archrc: .bashrc equivalent, named otherwise in order to preserve distro-specific configurations
+
 # Install by adding `[ -f "path/to/this/file" ] && . "path/to/this/file"` to your .bashrc
 
 # Path to this file
@@ -27,7 +41,7 @@ set_color green 32
 unset set_color
 
 # Set default prompt
-PS1="\[${colors[green]}\]\$ \u @ \H > \w > \[${colors[reset]}\]"
+PS1="\[${colors[green]}\]\$ \u @ \H > \w > \[${colors[reset]}\]" # e.g. `$ arch @ PC > ~ > `
 
 # Use starship for the prompt while in tmux
 [ -n "$TMUX" ] && has starship && eval "$(starship init bash)"
@@ -57,8 +71,11 @@ GPG_TTY=$(tty)
 export GPG_TTY
 
 # Manual formatting with bat
-# snippet by github.com/ValentinLeTallec
+# Snippet by github.com/ValentinLeTallec
 # https://github.com/sharkdp/bat/issues/2219#issuecomment-1645456156
 export MANPAGER="sh -c 'sed -r \"s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g\" | batcat --language man --plain'"
+
+# Provides various binary, decimal, and hexadecimal conversions
+# . "$source/scripts/dotfiles/number_conversion.sh"
 
 unset source colors

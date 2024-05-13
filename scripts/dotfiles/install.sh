@@ -48,6 +48,7 @@ packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf xeyes mesa-utils htop
 packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
 packages[fun]="sl neofetch"
 packages[wsl]="wslu"
+packages[tor]="tor tor-geoipdb torsocks"
 # shellcheck disable=SC2086
 sudo apt install ${packages[dev_tools]} \
   ${packages[utilities]} \
@@ -67,6 +68,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
 
 announce "Installing node.js"
 nvm install --lts
+
+announce "Installing live-server"
+npm install -g live-server
 
 announce "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -155,3 +159,7 @@ echo "If gnome-keyring is not already set up, use the following script to set it
 echo "  $development_dir/dotfiles/scripts/dotfiles/gnome_keyring_setup.sh"
 # TODO: setup gnome-keyring for git commit signing
 # ~/.gnupg/gpg-agent.conf
+
+announce "Installing pfetch"
+curl https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch --output "$user_binary_dir/pfetch"
+chmod u+x "$user_bin_dir/pfetch"
