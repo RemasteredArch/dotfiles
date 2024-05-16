@@ -12,7 +12,9 @@
 #
 # You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
 
+
 # virtualization_setup.sh: quick setup script for a Ubuntu Server 24.04 virtual machine, using Qemu and KVM
+## Maybe put some of this into $XDG_CONFIG_HOME and $XDG_DATA_HOME
 
 
 # Helpers
@@ -216,4 +218,8 @@ sudo "${vm[command]}" \
   -drive "file=${disk[path]},media=disk,aio=${vm[aio]},format=qcow2" \
   -nographic \
   -runas "$(whoami)" \
+  -device e1000,netdev=net0 \
+  -netdev user,id=net0,hostfwd=tcp::2222-:22 \
   "${install_params[@]}"
+
+sudo umount "${iso[mount_point]}"
