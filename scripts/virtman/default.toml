@@ -1,0 +1,25 @@
+[directories]
+data = "~/.local/state/virt/"
+config = "~/.config/virt/"
+
+[[virtual_machines]]
+name = "ubuntu-fresh"
+reinstall = true
+disk = "ubuntu-fresh.qcow"
+size = "10G"
+
+[[virtual_machines]]
+name = "ubuntu"
+reinstall = false                          # whether to boot the install ISO and set appropriate boot parameters every time
+command = "qemu-system-x86_64"             # as will be entered into a bash shell by virtman
+memory = "4G"                              # allocated RAM
+aio = "io_uring"                           # I/O interface (threads, native, or io_uring)
+disk = "ubuntu.qcow"                       # will be stored in ${directories[disks]}/$disk
+size = "10G"                               # the size of the disk
+iso = "ubuntu-24.04-live-server-amd64.iso" # will match with the appropriate [[isos]] entry
+
+[[isos]]
+file_name = "ubuntu-24.04-live-server-amd64.iso"                                 # will be stored in ${directories[isos]}/$file_name
+url = "https://www.releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso"
+download = false                                                                 # whether or not to download the ISO if the file does not already exist
+force_redownload = false                                                         # whether or not to download the ISO even if the file already exists
