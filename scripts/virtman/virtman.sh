@@ -17,13 +17,30 @@
 ## Maybe put some of this into $XDG_CONFIG_HOME and $XDG_DATA_HOME
 
 
-# Helpers
+# Functions
 
-text_reset="\e[0m"
-text_bold="\e[97m\e[100m\e[1m" # bold white text on a gray background
+declare -A script
+script[name]="virtman"
+script[version]="v0.1"
+script[authors]="RemasteredArch 2024"
+
+set_style() {
+  local name="$1"
+  local style="$2"
+
+  text[$name]="\e[${style}m"
+}
+
+declare -A text
+set_style reset 0
+set_style bold 1
+set_style italic 3
+set_style faint 90
+set_style white 97
+set_style highlight_gray 100
 
 announce() {
-  echo -e "\n$text_reset$text_bold$*$text_reset"
+  echo -e "\n${text[reset]}${text[white]}${text[highlight_gray]}$*${text[reset]}"
 }
 
 ## Detect if a program or alias exists
@@ -38,6 +55,95 @@ list() {
     echo "  $i"
   done
 }
+
+help_entry() {
+  local short_form="$1"
+  local long_form="$2"
+  local description="$3"
+  local long_form_length=${4:-13}
+
+  echo "  $short_form ${text[faint]}|${text[reset]} $(printf "%-${long_form_length}s" "$long_form")    ${text[faint]}$description${text[reset]}"
+}
+
+help() {
+  echo -e "$(cat << EOF
+${text[bold]}${script[name]}${text[reset]} ${text[italic]}${script[version]}${text[reset]}:
+  A script to manage Qemu virtual machines. Designed for use on Ubuntu 24.04.
+
+${text[bold]}Usage:${text[reset]}
+$(help_entry -h --help "Prints this help message")
+$(help_entry -v --version "Prints the version of this script")
+$(help_entry -c --config_name "A particular config to select from the config file")
+$(help_entry -c --config_dir "The path to a config directory (default: ${XDG_CONFIG_HOME:-"~/.config/"}/${script[name]})")
+
+
+License:${text[faint]}
+  ${script[name]} is a part of dotfiles.
+
+  Dotfiles is free software: you can redistribute it and/or modify it under the
+  terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later
+  version.
+
+  Dotfiles is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along with
+  dotfiles. If not, see <https://www.gnu.org/licenses/>.${text[reset]}
+EOF
+  )"
+}
+
+version() {
+  echo "${script[version]}"
+}
+
+
+# Command-line argument parsing
+
+args=""
+args=$(getopt \
+  --name "${script[name]}"\
+  --options f:,c:,h,v \
+  --longoptions config_dir:,config_name:,help,version \
+  -- "$@") \
+  || exit
+
+eval set -- "$args"
+unset args
+
+declare -A opts
+opts[config_dir]="${XDG_CONFIG_HOME:-"~/.config/virtman"}" # default value
+opts[config_name]=""
+
+while true; do
+  case "$1" in
+    -f | --config_dir )
+      opts[config_dir]="$2"
+      shift 2
+      ;;
+    -c | --config_name )
+      opts[config_name]="$2"
+      shift 2
+      ;;
+    -h | --help )
+      help
+      exit 0
+      ;;
+    -v | V | --version )
+      version
+      exit 0
+      ;;
+    -- )
+      shift
+      break
+      ;;
+    * )
+      break
+      ;;
+  esac
+done
 
 
 # Configs
@@ -223,3 +329,5 @@ sudo "${vm[command]}" \
   "${install_params[@]}"
 
 sudo umount "${iso[mount_point]}"
+
+exit 0

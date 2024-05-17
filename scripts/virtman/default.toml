@@ -1,6 +1,10 @@
 [directories]
-data = "~/.local/state/virt/"
-config = "~/.config/virt/"
+data = "~/.local/share/virtman/"
+config = "~/.config/virtman/"    # where to search for additional config files (without -f <path>, virtman will first scan for a config file in "$XDG_CONFIG_HOME" or "~/.config/virtman")
+prefer_xdg = true                # whether to prefer XDG Base Directory environment variables or the directories defined in this config file
+isos = "images"                  # where to store ISO files ($data/$isos)
+mount = "mnt"                    # where to mount ISOs ($data/$mount)
+disks = "disks"                  # where to store virutal disks ($data/$disks)
 
 [[virtual_machines]]
 name = "ubuntu-fresh"
@@ -11,7 +15,7 @@ size = "10G"
 [[virtual_machines]]
 name = "ubuntu"
 reinstall = false                          # whether to boot the install ISO and set appropriate boot parameters every time
-command = "qemu-system-x86_64"             # as will be entered into a bash shell by virtman
+command = "qemu-system-x86_64"             # as will be entered into a Bash shell by virtman
 memory = "4G"                              # allocated RAM
 aio = "io_uring"                           # I/O interface (threads, native, or io_uring)
 disk = "ubuntu.qcow"                       # will be stored in ${directories[disks]}/$disk
