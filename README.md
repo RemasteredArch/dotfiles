@@ -1,8 +1,20 @@
 # Dotfiles
 
-A collection of my miscellaneous configuration files. Designed for Ubuntu 24.04 [on WSL](https://apps.microsoft.com/detail/9nz3klhxdjp5).
+A collection of my miscellaneous scripts and configuration files. Designed for Ubuntu 24.04 [on WSL](https://apps.microsoft.com/detail/9nz3klhxdjp5).
 
 Organized as if it will be copied directly to `$HOME`, such as with [GNU Stow](https://www.gnu.org/software/stow/). If you use an unusual `$XDG_CONFIG_HOME`, you'll have to adjust `.config/` to that directory as necessary.
+
+## Scripts
+- `scripts/dotfiles/gnome_keyring_setup.sh`
+    - A simple script for setting up [GNOME Keyring](https://wiki.gnome.org/Projects/GnomeKeyring/)
+- `scripts/dotfiles/install.sh`
+    - A script to install and configure a fresh installation of Ubuntu 24.04 as per my preferences
+    - Mostly involves installing and setting up various dev tools
+    - This is COMPLETELY UNTESTED! Use at your own risk!
+- `scripts/dotfiles/number_conversion.sh`
+    - Provides a number of simple functions for binary, decimal, and hexadecimal conversions
+- `scripts/virtman/virtman.sh`
+    - A script for installation and management of [Qemu](https://www.qemu.org/) virtual machines
 
 ## See also
 
