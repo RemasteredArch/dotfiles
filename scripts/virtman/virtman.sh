@@ -23,6 +23,7 @@ declare -A script
 script[name]="virtman"
 script[version]="v0.1"
 script[authors]="RemasteredArch 2024"
+script[source]="$(dirname "$(realpath "$0")")"
 
 set_style() {
   local name="$1"
@@ -56,13 +57,35 @@ list() {
   done
 }
 
+declare -A configs
+configs[config_file_name]="config.toml"
+configs[default_config_file_name]="default.toml"
+configs[config_dir]="${XDG_CONFIG_HOME:-"$HOME/.config"}/${script[name]}"
+configs[config_file]="${configs[config_dir]}/${configs[config_file_name]}"
+configs[default_config_file]="${script[source]}/${configs[default_config_file_name]}"
+
 help_entry() {
   local short_form="$1"
   local long_form="$2"
   local description="$3"
   local long_form_length=${4:-13}
 
+  local args=$#
+  shift $((args<4 ? args : 4)) # min($#, 4)
+
   echo "  $short_form ${text[faint]}|${text[reset]} $(printf "%-${long_form_length}s" "$long_form")    ${text[faint]}$description${text[reset]}"
+
+  [ -n "$1" ] || return 0
+
+  local default_prefix="    (Default: "
+  echo -n "${text[faint]}$default_prefix'$1'"
+  shift
+
+  while [ -n "$1" ]; do
+    printf ",\n%${#default_prefix}s%s" ' ' "'$1'"
+    shift
+  done
+  echo ")${text[reset]}"
 }
 
 help() {
@@ -74,8 +97,9 @@ ${text[bold]}Usage:${text[reset]}
 $(help_entry -h --help "Prints this help message")
 $(help_entry -v --version "Prints the version of this script")
 $(help_entry -c --config_name "A particular config to select from the config file")
-$(help_entry -c --config_dir "The path to a config directory (default: ${XDG_CONFIG_HOME:-"~/.config/"}/${script[name]})")
-
+$(help_entry -f --config_file "The path to a config file" "" \
+  "${configs[config_file]}" \
+  "${configs[default_config_file]}")
 
 License:${text[faint]}
   ${script[name]} is a part of dotfiles.
@@ -106,7 +130,7 @@ args=""
 args=$(getopt \
   --name "${script[name]}"\
   --options f:,c:,h,v \
-  --longoptions config_dir:,config_name:,help,version \
+  --longoptions config_file:,config_name:,help,version \
   -- "$@") \
   || exit
 
@@ -114,13 +138,13 @@ eval set -- "$args"
 unset args
 
 declare -A opts
-opts[config_dir]="${XDG_CONFIG_HOME:-"~/.config/virtman"}" # default value
+opts[config_file]="${configs[config_file]}" # default value
 opts[config_name]=""
 
 while true; do
   case "$1" in
-    -f | --config_dir )
-      opts[config_dir]="$2"
+    -f | --config_file )
+      opts[config_file]="$2"
       shift 2
       ;;
     -c | --config_name )
@@ -131,7 +155,7 @@ while true; do
       help
       exit 0
       ;;
-    -v | V | --version )
+    -v | -V | --version )
       version
       exit 0
       ;;
@@ -147,9 +171,89 @@ done
 
 
 # Configs
-## TODO: read from file
 
 announce "Reading configs and fetching installed packages"
+{
+  if [ -f "${configs[config_file]}" ]; then
+    echo -e "Reading from user config...\n"
+    config=$(cat "${configs[config_file]}")
+
+  else
+    echo -e "Reading from default config...\n"
+    config=$(cat "${configs[default_config_file]}" 2> /dev/null)
+
+  fi
+
+  config_select() {
+    echo "$config" | dasel \
+      --read="toml" --write="-" \
+      -- "$1"
+  }
+
+  readarray -t vm_configs < <(config_select ".virtual_machines.all().name")
+
+  is_valid_vm_config() {
+    for i in "${vm_configs[@]}"; do
+      [ "$1" = "$i" ] && return 0
+    done
+
+    return 1
+  }
+
+  echo "Available configs:"
+  for i in "${vm_configs[@]}"; do
+    echo "- $i"
+  done
+
+  while ! is_valid_vm_config "${opts[config_name]}"; do
+    [ -n "${opts[config_name]}" ] && echo -e "Invalid config name! (${opts[config_name]})\n"
+
+    read -rp "Select a configuration: " opts["config_name"]
+
+    [ -n "${opts[config_name]}" ] || {
+      echo "No config selected!"
+      continue
+    }
+  done
+
+  echo "Selected ${opts[config_name]}"
+
+  read_config() {
+    local selector="$1"
+
+    config_select ".$section.$selector"
+  }
+
+  section="directories"
+  declare -A dirs
+  dirs[data]=$(read_config "data")
+  dirs[config]=$(read_config "config")
+  dirs[prefer_xdg]=$(read_config "prefer_xdg")
+  dirs[isos]="${dirs[data]}/$(read_config "isos")"
+  dirs[mount]="${dirs[data]}/$(read_config "mount")"
+  dirs[disks]="${dirs[data]}/$(read_config "disks")"
+
+  section="virtual_machines.all().filter(equal(name,${opts[config_name]}))"
+  declare -A vm
+  vm[name]=$(read_config "name")
+  vm[reinstall]=$(read_config "reinstall")
+  vm[command]=$(read_config "command") # replace with `kvm`?
+  vm[memory]=$(read_config "memory")
+  vm[aio]=$(read_config "aio")
+  vm[disk]=$(read_config "disk")
+  vm[size]=$(read_config "size")
+  vm[iso]=$(read_config "iso")
+
+  section="isos.all().filter(equal(file_name,${vm[iso]}))"
+  declare -A iso
+  iso[file_name]=$(read_config "file_name")
+  iso[path]="${dirs[isos]}/${iso[file_name]}"
+  iso[url]=$(read_config "url")
+  iso[download]=$(read_config "download")
+  iso[force_redownload]=$(read_config "force_redownload")
+
+  unset dirs vm iso
+}
 
 declare -A dirs
 dirs[virtualization]="$HOME/virt"
@@ -244,7 +348,11 @@ created="false"
 
 for dir in "${dirs[@]}"; do
   [ -d "$dir" ] || {
-    mkdir -p "${dirs[virtualization]}" "${dirs[iso_images]}" "${dirs[disks]}" "${dirs[mount]}"
+    mkdir -p \
+      "${dirs[virtualization]}" \
+      "${dirs[iso_images]}" \
+      "${dirs[disks]}" \
+      "${dirs[mount]}"
 
     echo "Created"
     list "${dirs[*]}"
