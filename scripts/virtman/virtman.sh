@@ -49,14 +49,6 @@ has() {
   [ "$(type "$1" 2> /dev/null)" ]
 }
 
-## List contents of an array (include associative arrays/dictionaries)
-list() {
-  array="$1"
-  for i in ${array[*]}; do # what's the proper way to do this?
-    echo "  $i"
-  done
-}
-
 declare -A configs
 configs[config_file_name]="config.toml"
 configs[default_config_file_name]="default.toml"
@@ -71,7 +63,7 @@ help_entry() {
   local long_form_length=${4:-13}
 
   local args=$#
-  shift $((args<4 ? args : 4)) # min($#, 4)
+  shift $((args < 4 ? args : 4)) # min($#, 4)
 
   echo "  $short_form ${text[faint]}|${text[reset]} $(printf "%-${long_form_length}s" "$long_form")    ${text[faint]}$description${text[reset]}"
 
@@ -128,7 +120,7 @@ version() {
 
 args=""
 args=$(getopt \
-  --name "${script[name]}"\
+  --name "${script[name]}" \
   --options f:,c:,h,v \
   --longoptions config_file:,config_name:,help,version \
   -- "$@") \
@@ -223,15 +215,22 @@ announce "Reading configs and fetching installed packages"
 
     config_select ".$section.$selector"
   }
+  expand_tilde() { # Not perfect but suitable for this use case
+    echo "${1/#\~/$HOME}" # Replace leading ~ with $HOME
+  }
 
   section="directories"
   declare -A dirs
-  dirs[data]=$(read_config "data")
-  dirs[config]=$(read_config "config")
+  dirs[data]=$(expand_tilde "$(read_config "data")")
+  dirs[config]=$(expand_tilde "$(read_config "config")")
   dirs[prefer_xdg]=$(read_config "prefer_xdg")
   dirs[isos]="${dirs[data]}/$(read_config "isos")"
   dirs[mount]="${dirs[data]}/$(read_config "mount")"
   dirs[disks]="${dirs[data]}/$(read_config "disks")"
+  necessary_dirs=( # Bash does not support multi-dimensional arrays
+    "${dirs[isos]}"
+    "${dirs[disks]}"
+    "${dirs[mount]}")
 
   section="virtual_machines.all().filter(equal(name,${opts[config_name]}))"
   declare -A vm
@@ -257,7 +256,7 @@ announce "Reading configs and fetching installed packages"
 
 declare -A dirs
 dirs[virtualization]="$HOME/virt"
-dirs[iso_images]="${dirs[virtualization]}/images"
+dirs[isos]="${dirs[virtualization]}/images"
 dirs[mount]="${dirs[virtualization]}/mnt"
 dirs[disks]="${dirs[virtualization]}/disks"
 
@@ -266,7 +265,7 @@ declare -A iso
 iso[download]="false"
 iso[url]="https://www.releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso"
 iso[file_name]="ubuntu-24.04-live-server-amd64.iso"
-iso[path]="${dirs[iso_images]}/${iso[file_name]}"
+iso[path]="${dirs[isos]}/${iso[file_name]}"
 iso[mount_point]="${dirs[mount]}/${iso[file_name]}"
 
 declare -A disk
@@ -297,6 +296,7 @@ else
 
 fi
 
+
 # Install
 
 ## Detect if a package is installed with APT
@@ -304,6 +304,7 @@ has_package() {
   package_name="$1"
   echo "${packages[installed]}" | grep "$package_name"
 }
+
 
 announce "Checking for virtualization support"
 
@@ -327,9 +328,11 @@ for package in ${packages[list]}; do
     [ "$(has_package "${packages[qemu]}")" ] &&
     continue
 
-  [ "$(has_package "$package" )" ] || {
+  [ "$(has_package "$package")" ] || {
     echo "$package not found. Installing:"
-    list "${packages[list]}"
+    for i in ${packages[list]}; do
+      echo "- $i"
+    done
 
     # shellcheck disable=SC2086
     sudo apt install ${packages[list]}
@@ -342,33 +345,34 @@ done
 [ $installed = "false" ] && echo "All packges installed, skipping installation"
 
 
-announce "Setting up virtualization directory"
+announce "Setting up necessary directories"
 
 created="false"
 
-for dir in "${dirs[@]}"; do
-  [ -d "$dir" ] || {
-    mkdir -p \
-      "${dirs[virtualization]}" \
-      "${dirs[iso_images]}" \
-      "${dirs[disks]}" \
-      "${dirs[mount]}"
+for necessary_directory in "${necessary_dirs[@]}"; do
+  [ -d "$necessary_directory" ] || {
+    echo "Some or all directories are missing! Will create:"
 
-    echo "Created"
-    list "${dirs[*]}"
+    for dirs in "${necessary_dirs[@]}"; do
+      echo "- $dirs"
+    done
+    echo
+
+    read -rp "Hit enter to continue with creation"
+    mkdir -p "${necessary_dirs[@]}" || exit
 
     created="true"
     break
   }
 done
 
-[ "$created" = "false" ] && echo "Add directories exist, skipping"
+[ "$created" = "false" ] && echo "All directories exist, skipping"
 
 
 announce "Downloading install image"
 
 if [ "${iso[download]}" = "true" ]; then
-  cd "${dirs[iso_images]}" || exit
+  cd "${dirs[isos]}" || exit
 
   if [ -f "${iso[file_name]}" ]; then
     curl "${iso[url]}" --output "${iso[file_name]}"
@@ -392,7 +396,7 @@ if [ -f "${disk[file_name]}" ]; then
   echo "Disk image already exists, skipping creation"
 
 else
-  qemu-img create -f "${disk[format]}" "${disk[file_name]}" "${disk[size]}"
+  qemu-img create -f "${disk[format]}" "${disk[file_name]}" "${disk[size]}" || exit
 
 fi
 
@@ -400,13 +404,20 @@ fi
 announce "Mounting install disk and setting install-specific boot parameters"
 
 if [ "${vm[install]}" = "true" ]; then
-  echo 'If you have already installed to the virtual disk, or would otherwise like to not load the install ISO image, please edit this script to set vm[install]="false"'
+  echo -e "$(cat << EOF
+If you have already installed to the virtual disk, or would otherwise like to not load the install ISO image, please edit or create a config file to set:
 
-  mkdir "${iso[mount_point]}"
-  sudo mount -r "${iso[path]}" "${iso[mount_point]}"
+${text[italic]}[[virtual_machines]]
+name = ${opts[config_name]}${text[reset]}
+${text[bold]}reinstall = false${text[reset]}
+EOF
+  )"
+
+  mkdir "${iso[mount_point]}" || exit
+  sudo mount -r "${iso[path]}" "${iso[mount_point]}" || exit
 
   install_params=(
-    '-cdrom' "${dirs[iso_images]}/${iso[file_name]}"
+    '-cdrom' "${dirs[isos]}/${iso[file_name]}"
     '-kernel' "${iso[mount_point]}/casper/vmlinuz"
     '-initrd' "${iso[mount_point]}/casper/initrd"
     '-append' 'console=ttyS0')
@@ -437,5 +448,6 @@ sudo "${vm[command]}" \
   "${install_params[@]}"
 
 sudo umount "${iso[mount_point]}"
+rmdir "${iso[mount_point]}"
 
 exit 0
