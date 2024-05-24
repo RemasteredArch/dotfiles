@@ -44,11 +44,6 @@ announce() {
   echo -e "\n${text[reset]}${text[white]}${text[highlight_gray]}$*${text[reset]}"
 }
 
-## Detect if a program or alias exists
-has() {
-  [ "$(type "$1" 2> /dev/null)" ]
-}
-
 declare -A configs
 configs[config_file_name]="config.toml"
 configs[default_config_file_name]="default.toml"
@@ -165,121 +160,93 @@ done
 # Configs
 
 announce "Reading configs and fetching installed packages"
-{
-  if [ -f "${configs[config_file]}" ]; then
-    echo -e "Reading from user config...\n"
-    config=$(cat "${configs[config_file]}")
+if [ -f "${configs[config_file]}" ]; then
+  echo -e "Reading from user config...\n"
+  config=$(cat "${configs[config_file]}")
 
-  else
-    echo -e "Reading from default config...\n"
-    config=$(cat "${configs[default_config_file]}" 2> /dev/null)
+else
+  echo -e "Reading from default config...\n"
+  config=$(cat "${configs[default_config_file]}" 2> /dev/null)
 
-  fi
+fi
 
-  config_select() {
-    echo "$config" | dasel \
-      --read="toml" --write="-" \
-      -- "$1"
-  }
-
-  readarray -t vm_configs < <(config_select ".virtual_machines.all().name")
-
-  is_valid_vm_config() {
-    for i in "${vm_configs[@]}"; do
-      [ "$1" = "$i" ] && return 0
-    done
-
-    return 1
-  }
-
-  echo "Available configs:"
-  for i in "${vm_configs[@]}"; do
-    echo "- $i"
-  done
-
-  while ! is_valid_vm_config "${opts[config_name]}"; do
-    [ -n "${opts[config_name]}" ] && echo -e "Invalid config name! (${opts[config_name]})\n"
-
-    read -rp "Select a configuration: " opts["config_name"]
-
-    [ -n "${opts[config_name]}" ] || {
-      echo "No config selected!"
-      continue
-    }
-  done
-
-  echo "Selected ${opts[config_name]}"
-
-  read_config() {
-    local selector="$1"
-
-    config_select ".$section.$selector"
-  }
-  expand_tilde() { # Not perfect but suitable for this use case
-    echo "${1/#\~/$HOME}" # Replace leading ~ with $HOME
-  }
-
-  section="directories"
-  declare -A dirs
-  dirs[data]=$(expand_tilde "$(read_config "data")")
-  dirs[config]=$(expand_tilde "$(read_config "config")")
-  dirs[prefer_xdg]=$(read_config "prefer_xdg")
-  dirs[isos]="${dirs[data]}/$(read_config "isos")"
-  dirs[mount]="${dirs[data]}/$(read_config "mount")"
-  dirs[disks]="${dirs[data]}/$(read_config "disks")"
-  necessary_dirs=( # Bash does not support multi-dimensional arrays
-    "${dirs[isos]}"
-    "${dirs[disks]}"
-    "${dirs[mount]}")
-
-  section="virtual_machines.all().filter(equal(name,${opts[config_name]}))"
-  declare -A vm
-  vm[name]=$(read_config "name")
-  vm[reinstall]=$(read_config "reinstall")
-  vm[command]=$(read_config "command") # replace with `kvm`?
-  vm[memory]=$(read_config "memory")
-  vm[aio]=$(read_config "aio")
-  vm[disk]=$(read_config "disk")
-  vm[size]=$(read_config "size")
-  vm[iso]=$(read_config "iso")
-
-  section="isos.all().filter(equal(file_name,${vm[iso]}))"
-  declare -A iso
-  iso[file_name]=$(read_config "file_name")
-  iso[path]="${dirs[isos]}/${iso[file_name]}"
-  iso[url]=$(read_config "url")
-  iso[download]=$(read_config "download")
-  iso[force_redownload]=$(read_config "force_redownload")
-
-  unset dirs vm iso
+config_select() {
+  echo "$config" | dasel \
+    --read="toml" --write="-" \
+    -- "$1"
 }
 
+readarray -t vm_configs < <(config_select ".virtual_machines.all().name")
+
+is_valid_vm_config() {
+  for i in "${vm_configs[@]}"; do
+    [ "$1" = "$i" ] && return 0
+  done
+
+  return 1
+}
+
+echo "Available configs:"
+for i in "${vm_configs[@]}"; do
+  echo "- $i"
+done
+
+while ! is_valid_vm_config "${opts[config_name]}"; do
+  [ -n "${opts[config_name]}" ] && echo -e "Invalid config name! (${opts[config_name]})\n"
+
+  read -rp "Select a configuration: " opts["config_name"]
+
+  [ -n "${opts[config_name]}" ] || {
+    echo "No config selected!"
+    continue
+  }
+done
+
+echo "Selected ${opts[config_name]}"
+
+read_config() {
+  local selector="$1"
+
+  config_select ".$section.$selector"
+}
+expand_tilde() { # Not perfect but suitable for this use case
+  echo "${1/#\~/$HOME}" # Replace leading ~ with $HOME
+}
+
+section="directories"
 declare -A dirs
-dirs[virtualization]="$HOME/virt"
-dirs[isos]="${dirs[virtualization]}/images"
-dirs[mount]="${dirs[virtualization]}/mnt"
-dirs[disks]="${dirs[virtualization]}/disks"
+dirs[data]=$(expand_tilde "$(read_config "data")")
+dirs[config]=$(expand_tilde "$(read_config "config")")
+dirs[prefer_xdg]=$(read_config "prefer_xdg")
+dirs[isos]="${dirs[data]}/$(read_config "isos")"
+dirs[mount]="${dirs[data]}/$(read_config "mount")"
+dirs[disks]="${dirs[data]}/$(read_config "disks")"
+necessary_dirs=( # Bash does not support multi-dimensional arrays
+  "${dirs[isos]}"
+  "${dirs[disks]}"
+  "${dirs[mount]}")
 
-## Direct links for Ubuntu can be easily gotten from https://www.releases.ubuntu.com/
-declare -A iso
-iso[download]="false"
-iso[url]="https://www.releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso"
-iso[file_name]="ubuntu-24.04-live-server-amd64.iso"
-iso[path]="${dirs[isos]}/${iso[file_name]}"
-iso[mount_point]="${dirs[mount]}/${iso[file_name]}"
-
-declare -A disk
-disk[file_name]="ubuntu.qcow"
-disk[size]="10G"
-disk[format]="qcow2"
-disk[path]="${dirs[disks]}/${disk[file_name]}"
-
+section="virtual_machines.all().filter(equal(name,${opts[config_name]}))"
 declare -A vm
-vm[install]="true" # whether to load install ISO image and set appropriate boot parameters
-vm[command]="qemu-system-x86_64" # replaces with `kvm`?
-vm[name]="ubuntu-vm"
-vm[memory]="4G"
-vm[aio]="io_uring" # threads, native, or io_uring
+vm[name]=$(read_config "name")
+vm[reinstall]=$(read_config "reinstall")
+vm[command]=$(read_config "command") # replace with `kvm`?
+vm[memory]=$(read_config "memory")
+vm[aio]=$(read_config "aio")
+vm[disk]=$(read_config "disk")
+vm[format]=$(read_config "format")
+vm[disk_path]="${dirs[disks]}/${vm[disk]}"
+vm[size]=$(read_config "size")
+vm[iso]=$(read_config "iso")
+
+section="isos.all().filter(equal(file_name,${vm[iso]}))"
+declare -A iso
+iso[file_name]=$(read_config "file_name")
+iso[path]="${dirs[isos]}/${iso[file_name]}"
+iso[url]=$(read_config "url")
+iso[download]=$(read_config "download")
+iso[force_redownload]=$(read_config "force_redownload")
+iso[mount_point]="${dirs[mount]}/${iso[file_name]}"
 
 declare -A packages
 packages[cpu-checker]="cpu-checker"
@@ -392,18 +359,18 @@ announce "Creating disk image"
 
 cd "${dirs[disks]}" || exit
 
-if [ -f "${disk[file_name]}" ]; then
+if [ -f "${vm[disk]}" ]; then
   echo "Disk image already exists, skipping creation"
 
 else
-  qemu-img create -f "${disk[format]}" "${disk[file_name]}" "${disk[size]}" || exit
+  qemu-img create -f "${vm[format]}" "${vm[disk]}" "${vm[size]}" || exit
 
 fi
 
 
 announce "Mounting install disk and setting install-specific boot parameters"
 
-if [ "${vm[install]}" = "true" ]; then
+if [ "${vm[reinstall]}" = "true" ]; then
   echo -e "$(cat << EOF
 If you have already installed to the virtual disk, or would otherwise like to not load the install ISO image, please edit or create a config file to set:
 
@@ -417,7 +384,7 @@ EOF
   sudo mount -r "${iso[path]}" "${iso[mount_point]}" || exit
 
   install_params=(
-    '-cdrom' "${dirs[isos]}/${iso[file_name]}"
+    '-cdrom' "${iso[path]}"
     '-kernel' "${iso[mount_point]}/casper/vmlinuz"
     '-initrd' "${iso[mount_point]}/casper/initrd"
     '-append' 'console=ttyS0')
@@ -440,7 +407,7 @@ sudo "${vm[command]}" \
   -accel kvm \
   -m "${vm[memory]}" \
   -name "${vm[name]}" \
-  -drive "file=${disk[path]},media=disk,aio=${vm[aio]},format=qcow2" \
+  -drive "file=${vm[disk_path]},media=disk,aio=${vm[aio]},format=qcow2" \
   -nographic \
   -runas "$(whoami)" \
   -device e1000,netdev=net0 \
