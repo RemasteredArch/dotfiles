@@ -20,12 +20,12 @@ command = "qemu-system-x86_64"             # As will be entered into a Bash shel
 memory = "4G"                              # Allocated RAM
 aio = "io_uring"                           # I/O interface (threads, native, or io_uring)
 disk = "ubuntu.qcow"                       # Will be stored in ${directories[disks]}/$disk
-format = "qcow"                            # The format of the disk
+format = "qcow2"                           # The format of the disk
 size = "10G"                               # The size of the disk
 iso = "ubuntu-24.04-live-server-amd64.iso" # Will match with the appropriate [[isos]] entry
 
 [[isos]]
 file_name = "ubuntu-24.04-live-server-amd64.iso"                                 # Will be stored in ${directories[isos]}/$file_name
-url = "https://www.releases.ubuntu.com/noble/ubuntu-23.04-live-server-amd64.iso" # Direct links can be easily gotten from https://www.releases.ubuntu.com/
+url = "https://www.releases.ubuntu.com/noble/ubuntu-24.04-live-server-amd64.iso" # Direct links can be easily gotten from https://www.releases.ubuntu.com/
 download = true                                                                  # Whether or not to download the ISO if the file does not already exist
 force_redownload = false                                                         # Whether or not to download the ISO even if the file already exists

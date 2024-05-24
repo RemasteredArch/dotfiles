@@ -342,10 +342,18 @@ if [ "${iso[download]}" = "true" ]; then
   cd "${dirs[isos]}" || exit
 
   if [ -f "${iso[file_name]}" ]; then
-    curl "${iso[url]}" --output "${iso[file_name]}"
+    echo "ISO image already exists, skipping download"
 
   else
-    echo "ISO image already exists, skipping download"
+    curl "${iso[url]}" --output "${iso[file_name]}" --fail-with-body || {
+      exit_code="$?"
+
+      head -1 "${iso[file_name]}" \
+        | grep --quiet --ignore-case "html" \
+        && rm "${iso[file_name]}"
+
+      exit "$exit_code"
+    }
 
   fi
 
@@ -380,7 +388,14 @@ ${text[bold]}reinstall = false${text[reset]}
 EOF
   )"
 
-  mkdir "${iso[mount_point]}" || exit
+  if [ -d "${iso[mount_point]}" ]; then
+    mountpoint --quiet "${iso[mount_point]}" && sudo umount "${iso[mount_point]}" || exit
+
+  else
+    mkdir "${iso[mount_point]}" || exit
+
+  fi
+
   sudo mount -r "${iso[path]}" "${iso[mount_point]}" || exit
 
   install_params=(
@@ -407,7 +422,7 @@ sudo "${vm[command]}" \
   -accel kvm \
   -m "${vm[memory]}" \
   -name "${vm[name]}" \
-  -drive "file=${vm[disk_path]},media=disk,aio=${vm[aio]},format=qcow2" \
+  -drive "file=${vm[disk_path]},media=disk,aio=${vm[aio]},format=${vm[format]}" \
   -nographic \
   -runas "$(whoami)" \
   -device e1000,netdev=net0 \
