@@ -8,12 +8,6 @@ mount = "mnt"     # Where to mount ISOs ($data/$mount)
 disks = "disks"   # Where to store virutal disks ($data/$disks)
 
 [[virtual_machines]]
-name = "ubuntu-fresh"
-reinstall = true
-disk = "ubuntu-fresh.qcow"
-size = "10G"
-
-[[virtual_machines]]
 name = "ubuntu"
 reinstall = false                          # Whether to boot the install ISO and set appropriate boot parameters every time
 command = "qemu-system-x86_64"             # As will be entered into a Bash shell by virtman

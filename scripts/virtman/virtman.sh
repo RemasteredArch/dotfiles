@@ -21,7 +21,7 @@
 
 declare -A script
 script[name]="virtman"
-script[version]="v0.1"
+script[version]="v0.2"
 script[authors]="RemasteredArch 2024"
 script[source]="$(dirname "$(realpath "$0")")"
 
@@ -83,6 +83,8 @@ ${text[bold]}${script[name]}${text[reset]} ${text[italic]}${script[version]}${te
 ${text[bold]}Usage:${text[reset]}
 $(help_entry -h --help "Prints this help message")
 $(help_entry -v --version "Prints the version of this script")
+$(help_entry -i --install "Whether to load the install ISO of the virtual machine instead of booting from its disk" "" \
+  "The value of virtual_machines.reinstall in the config")
 $(help_entry -c --config_name "A particular config to select from the config file")
 $(help_entry -f --config_file "The path to a config file" "" \
   "${configs[config_file]}" \
@@ -116,8 +118,8 @@ version() {
 args=""
 args=$(getopt \
   --name "${script[name]}" \
-  --options f:,c:,h,v \
-  --longoptions config_file:,config_name:,help,version \
+  --options f:,c:,i,h,v \
+  --longoptions config_file:,config_name:,install,help,version \
   -- "$@") \
   || exit
 
@@ -137,6 +139,10 @@ while true; do
     -c | --config_name )
       opts[config_name]="$2"
       shift 2
+      ;;
+    -i | --install)
+      opts[install]="true"
+      shift
       ;;
     -h | --help )
       help
@@ -229,7 +235,7 @@ necessary_dirs=( # Bash does not support multi-dimensional arrays
 section="virtual_machines.all().filter(equal(name,${opts[config_name]}))"
 declare -A vm
 vm[name]=$(read_config "name")
-vm[reinstall]=$(read_config "reinstall")
+vm[reinstall]=${opts[install]:-$(read_config "reinstall")}
 vm[command]=$(read_config "command") # replace with `kvm`?
 vm[memory]=$(read_config "memory")
 vm[aio]=$(read_config "aio")
@@ -268,7 +274,7 @@ fi
 
 ## Detect if a package is installed with APT
 has_package() {
-  package_name="$1"
+  local package_name="$1"
   echo "${packages[installed]}" | grep "$package_name"
 }
 
@@ -309,7 +315,7 @@ for package in ${packages[list]}; do
   }
 done
 
-[ $installed = "false" ] && echo "All packges installed, skipping installation"
+$installed && echo "All packges installed, skipping installation"
 
 
 announce "Setting up necessary directories"
@@ -333,12 +339,12 @@ for necessary_directory in "${necessary_dirs[@]}"; do
   }
 done
 
-[ "$created" = "false" ] && echo "All directories exist, skipping"
+$created && echo "All directories exist, skipping"
 
 
 announce "Downloading install image"
 
-if [ "${iso[download]}" = "true" ]; then
+if ${iso[download]}; then
   cd "${dirs[isos]}" || exit
 
   if [ -f "${iso[file_name]}" ]; then
@@ -378,7 +384,7 @@ fi
 
 announce "Mounting install disk and setting install-specific boot parameters"
 
-if [ "${vm[reinstall]}" = "true" ]; then
+if ${vm[reinstall]}; then
   echo -e "$(cat << EOF
 If you have already installed to the virtual disk, or would otherwise like to not load the install ISO image, please edit or create a config file to set:
 
