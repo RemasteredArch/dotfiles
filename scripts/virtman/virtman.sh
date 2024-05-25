@@ -315,7 +315,7 @@ for package in ${packages[list]}; do
   }
 done
 
-$installed && echo "All packges installed, skipping installation"
+$installed || echo "All packges installed, skipping installation"
 
 
 announce "Setting up necessary directories"
@@ -339,7 +339,7 @@ for necessary_directory in "${necessary_dirs[@]}"; do
   }
 done
 
-$created && echo "All directories exist, skipping"
+$created || echo "All directories exist, skipping"
 
 
 announce "Downloading install image"
