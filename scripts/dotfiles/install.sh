@@ -43,7 +43,7 @@ sudo snap refresh
 
 announce "Installing various packages"
 declare -A packages
-packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essentials"
+packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essentials gdb"
 packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf xeyes mesa-utils htop btop screen"
 packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
 packages[fun]="sl neofetch"

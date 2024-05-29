@@ -1,0 +1,5 @@
+# Disable introductory and copyright text from startup
+set startup-quietly on
+
+# Print help message to account for lack of startup info
+echo For help, type 'help'\n

@@ -1,0 +1,10 @@
+# Disables automatic downloading of debug symbols for packages (from <https://debuginfod.ubuntu.com> by default on Ubuntu)
+set debuginfod enabled off
+
+# Disable confirmation prompt when exiting
+define hook-quit
+  set confirm off
+end
+
+# Set a custom prompt
+set extended-prompt \n\[\e[1;32m\]$ arch @ gdb > \[\e[0m\]

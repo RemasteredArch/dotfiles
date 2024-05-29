@@ -57,3 +57,6 @@ has batcat && alias bat="batcat"
 ## Diffs
 has diff && alias gdiff="diff --unified --color=auto" # Git-style
 has nvim && alias ndiff="nvim -d" # With neovim
+
+## WSL
+has wslview && alias wv="wslview"
