@@ -84,7 +84,7 @@ rustup component add rust-analyzer
 announce "Installing starship"
 curl -sS https://starship.rs/install.sh | sh
 
-announce "Installing neovim"
+announce "Installing Neovim"
 sudo add-apt-repository ppa:neovim-ppa/unstable \
 && sudo apt update \
 && sudo apt install neovim
@@ -170,10 +170,15 @@ announce "Installing pfetch"
 curl https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch --output "$user_binary_dir/pfetch"
 chmod u+x "$user_binary_dir/pfetch"
 
-announce "Reading Bash configs"
-. "$HOME/.archrc"
 
-announce "All done!"
+announce "All done! Don't forget to:"
+cat << EOF
+- Enable Bash configs:
+    . "$HOME/.archrc"
+- Setup dependencies of the custom Neovim config
+- Install tmux plugins:
+    <^s I> (ctrl+s shift+i) while in tmux
+EOF
 
 exit 0
 
