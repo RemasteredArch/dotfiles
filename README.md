@@ -11,6 +11,15 @@ Organized as if it will be copied directly to `$HOME`, such as with [GNU Stow](h
     - A script to install and configure a fresh installation of Ubuntu 24.04 as per my preferences
     - Mostly involves installing and setting up various dev tools
     - This is COMPLETELY UNTESTED! Use at your own risk!
+    - On a fresh install, run:
+```bash
+# Again, this is COMPLETELY UNTESTED!
+temp_dir=$(mktemp --directory -t dotfiles.install.XXXXXXXX) \
+  && curl "https://raw.githubusercontent.com/RemasteredArch/dotfiles/main/scripts/dotfiles/install.sh" -o "$temp_dir/install.sh" \
+  && chmod u+x "$temp_dir/install.sh" \
+  && "$temp_dir/install.sh"
+# DO NOT RUN THIS if you are not certain that is is okay!
+```
 - `scripts/dotfiles/number_conversion.sh`
     - Provides a number of simple functions for binary, decimal, and hexadecimal conversions
 - `scripts/virtman/virtman.sh`
