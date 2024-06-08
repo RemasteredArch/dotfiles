@@ -50,13 +50,16 @@ packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update
 packages[fun]="sl neofetch"
 packages[wsl]="wslu" # TODO: add a check to only install on WSL
 packages[tor]="tor tor-geoipdb torsocks"
+packages[doc]="bash-doc"
 
 # shellcheck disable=SC2086
 sudo apt install ${packages[dev_tools]} \
   ${packages[utilities]} \
   ${packages[theming]} \
   ${packages[fun]} \
-  ${packages[wsl]}
+  ${packages[doc]} \
+  ${packages[wsl]} \
+  # ${packages[tor]}
 unset packages
 
 announce "Installing various snaps"

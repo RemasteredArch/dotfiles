@@ -15,7 +15,7 @@ memory = "4G"                              # Allocated RAM
 aio = "io_uring"                           # I/O interface (threads, native, or io_uring)
 disk = "ubuntu.qcow"                       # Will be stored in ${directories[disks]}/$disk
 format = "qcow2"                           # The format of the disk
-size = "10G"                               # The size of the disk
+size = "16G"                               # The size of the disk
 iso = "ubuntu-24.04-live-server-amd64.iso" # Will match with the appropriate [[isos]] entry
 
 [[isos]]
