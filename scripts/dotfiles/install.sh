@@ -167,6 +167,7 @@ read -rp "Git email: " git_email
 git config --global user.email "$git_email"
 unset git_username git_email
 
+
 announce "Authenticate Git credentials using: gh auth login"
 announce "WARNING: GitHub CLI will store credentials in plain text if gnome-keyring is not set up."
 echo "If gnome-keyring is not already set up, use the following script to set it up:"
@@ -186,6 +187,9 @@ cat << EOF
 - Setup dependencies of the custom Neovim config
 - Install tmux plugins:
     <^s I> (ctrl+s shift+i) while in tmux
+- Generate keypairs for Git commit signing
+- Authenticate with the GitHub CLI:
+    gh auth login
 EOF
 
 exit 0
