@@ -158,6 +158,7 @@ announce "Install tmux plugins using <^s I> (ctrl+s shift+i) while in tmux"
 
 announce "Setting up git config"
 git config --global init.defaultBranch main
+git config --global pull.rebase false # Use merging during `git pull` conflicts
 
 read -rp "Git username: " git_username
 git config --global user.name "$git_username"
