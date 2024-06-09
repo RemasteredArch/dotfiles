@@ -77,6 +77,10 @@ nvm install --lts
 announce "Installing live-server"
 npm install -g live-server
 
+announce "installing Bun"
+curl -fsSL https://bun.sh/install | bash
+
+
 announce "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . "$HOME/.cargo/env"
