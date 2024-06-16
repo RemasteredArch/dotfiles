@@ -44,7 +44,7 @@ sudo snap refresh
 
 announce "Installing various packages"
 declare -A packages
-packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb iwyu cpplint"
+packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb iwyu cpplint hyperfine lldb"
 packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix fd-find dasel"
 packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
 packages[fun]="sl neofetch"
@@ -121,7 +121,7 @@ git clone "https://github.com/RemasteredArch/nvim-config.git"
 git clone "https://github.com/RemasteredArch/tmux-config.git"
 
 announce "Setting up home directory configs"
-config_files=(".archrc" ".arch_aliases" ".shellcheckrc" ".vimrc")
+config_files=(".archrc" ".arch_aliases" ".shellcheckrc" ".vimrc" ".lldbinit")
 for file in "${config_files[@]}"; do
   ln -s "$(pwd)/$file" "$HOME/$file"
 done

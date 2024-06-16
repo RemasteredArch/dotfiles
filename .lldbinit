@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Copyright © 2024 RemasteredArch
+#
+# This file is part of dotfiles.
+#
+# Dotfiles is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# Dotfiles is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
+
+# .lldbinit: Configurations for lldb
+
+# Ideally, this would have a \n like the GDB prompt, but that behavior is bugged,
+# at least in 18.1.3 on Ubuntu 24.04
+settings set prompt "$ lldb > "
+
+# Use Python to set prompt with username
+script import getpass; isRoot = os.geteuid() == 0; prompt = "{} {} @ lldb > ".format("#" if isRoot else "$", getpass.getuser()); returnStatus = lldb.debugger.GetCommandInterpreter().HandleCommand("settings set prompt \"%s\"" % prompt, lldb.SBCommandReturnObject());
+
+# Best reference for ANSI options is the source:
+# https://github.com/llvm/llvm-project/blob/main/lldb/include/lldb/Utility/AnsiTerminal.h
+settings set prompt-ansi-prefix "${ansi.bold}${ansi.fg.green}"
+
+# Use Python to make prompt red if running as Root
+script if os.geteuid() == 0: returnStatus = lldb.debugger.GetCommandInterpreter().HandleCommand("settings set prompt-ansi-prefix \"${ansi.bold}${ansi.fg.red}\"", lldb.SBCommandReturnObject());

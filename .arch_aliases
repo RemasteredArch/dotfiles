@@ -61,3 +61,7 @@ has nvim && alias ndiff="nvim -d" # With neovim
 ## WSL
 has wslview && alias wv="wslview"
 has notepad.exe && alias np="notepad.exe"
+has explorer.exe && {
+  alias ex="explorer.exe"
+  alias e.="explorer.exe ."
+}
