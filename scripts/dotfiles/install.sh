@@ -45,9 +45,9 @@ sudo snap refresh
 announce "Installing various packages"
 declare -A packages
 packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb iwyu cpplint hyperfine lldb"
-packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix fd-find dasel"
+packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix fd-find dasel bind9-dnsutils"
 packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
-packages[fun]="sl neofetch"
+packages[fun]="sl neofetch hollywood"
 packages[wsl]="wslu" # TODO: add a check to only install on WSL
 packages[tor]="tor tor-geoipdb torsocks"
 packages[doc]="bash-doc"

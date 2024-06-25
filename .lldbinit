@@ -10,7 +10,7 @@
 #
 # You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
 
-# .lldbinit: Configurations for lldb
+# .lldbinit: Configurations for LLDB
 
 # Ideally, this would have a \n like the GDB prompt, but that behavior is bugged,
 # at least in 18.1.3 on Ubuntu 24.04
