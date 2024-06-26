@@ -172,8 +172,9 @@ announce "Authenticate Git credentials using: gh auth login"
 announce "WARNING: GitHub CLI will store credentials in plain text if gnome-keyring is not set up."
 echo "If gnome-keyring is not already set up, use the following script to set it up:"
 echo "  $development_dir/dotfiles/scripts/dotfiles/gnome_keyring_setup.sh"
-# TODO: setup gnome-keyring for git commit signing
-# ~/.gnupg/gpg-agent.conf
+
+announce "Setting up Git commit signing"
+"$development_dir/dotfiles/scripts/dotfiles/git_commit_signing_setup.sh"
 
 announce "Installing pfetch"
 curl https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch --output "$user_binary_dir/pfetch"
@@ -187,7 +188,6 @@ cat << EOF
 - Setup dependencies of the custom Neovim config
 - Install tmux plugins:
     <^s I> (ctrl+s shift+i) while in tmux
-- Generate keypairs for Git commit signing
 - Authenticate with the GitHub CLI:
     gh auth login
 EOF
