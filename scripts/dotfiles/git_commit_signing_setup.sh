@@ -174,10 +174,11 @@ git_config() {
   local value="$2"
 
   local command="git config $git_scope $config $value"
-  echo "$command"
+  echo "- $command"
   eval "$command"
 }
 
+echo "Running..."
 git_config gpg.format openpgp
 git_config user.signingkey "$gpg_key_id"
 git_config commit.gpgsign true
