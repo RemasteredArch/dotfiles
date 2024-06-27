@@ -22,7 +22,7 @@ alias cdp="cd -P ." # Resolve symlinks in the current working path
 alias cls="clear"
 alias clsa="clear; lsa"
 alias :q="exit"
-alias su="sudo -i"
+alias su="sudo --login"
 alias hg="history | grep"
 alias relog='sudo login -p $(whoami); exit'
 
@@ -48,15 +48,21 @@ has eza && {
 has sl && {
   alias sl="sl -e"
   has lsa && alias las="sl"
-  has clsa && alias csla="sl"
+  has clsa && {
+    alias csla="sl"
+    alias clas="sl"
+  }
 }
 
 ## Batcat
 has batcat && alias bat="batcat"
 
+## Du/Dust
+has du && alias dus="du --all --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
+
 ## Diffs
 has diff && alias gdiff="diff --unified --color=auto" # Git-style
-has nvim && alias ndiff="nvim -d" # With neovim
+has nvim && alias ndiff="nvim -d" # With Neovim
 
 ## WSL
 has wslview && alias wv="wslview"
