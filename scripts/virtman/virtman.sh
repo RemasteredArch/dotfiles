@@ -434,7 +434,11 @@ sudo "${vm[command]}" \
   -netdev user,id=net0,hostfwd=tcp::2222-:22 \
   "${install_params[@]}"
 
-sudo umount "${iso[mount_point]}"
-rmdir "${iso[mount_point]}"
+[ -d "${iso[mount_point]}" ] && {
+  mountpoint --quiet "${iso[mountpoint]}" \
+    && sudo umount "${iso[mount_point]}"
+
+  rmdir "${iso[mount_point]}"
+}
 
 exit 0
