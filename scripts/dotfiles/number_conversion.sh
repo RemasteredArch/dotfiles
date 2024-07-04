@@ -21,9 +21,9 @@
 # - `convert_number 2 10 1111` returns `15`
 # - `convert_number 16 10 f` returns `15`
 convert_number() {
-  input_base="$1"
-  output_base="$2"
-  input_number="${3^^}"
+  local input_base="$1"
+  local output_base="$2"
+  local input_number="${3^^}"
   printf "obase=%d; ibase=%d; %s\n" "$output_base" "$input_base" "$input_number" | bc
 }
 export -f convert_number
@@ -35,8 +35,8 @@ export -f convert_number
 # - `binary 10 4` returns `1010`
 # - `binary 10` returns `00001010`
 binary() {
-  input_decimal="$1"
-  length=${2:-8}
+  local input_decimal="$1"
+  local length=${2:-8}
   printf "%0${length}d\n" "$(convert_number 10 2 "$input_decimal")"
 }
 export -f binary
@@ -47,7 +47,7 @@ export -f binary
 # For example:
 # - `binary 1010` returns `10`
 decimal() {
-  input_binary="$1"
+  local input_binary="$1"
   convert_number 2 10 "$input_binary"
 }
 export -f decimal
@@ -59,8 +59,8 @@ export -f decimal
 # - `hex2b ff 8` returns `11111111`
 # - `hex2b ffff` returns `1111111111111111`
 hex2b() {
-  input_hex="$1"
-  length=${2:-16}
+  local input_hex="$1"
+  local length=${2:-16}
   printf "%0${length}d\n" "$(convert_number 16 2 "$input_hex")"
 }
 export -f hex2b
@@ -70,7 +70,7 @@ export -f hex2b
 # For example:
 # - `hex2d ffff` returns `65535`
 hex2d() {
-  input_hex="$1"
+  local input_hex="$1"
   convert_number 16 10 "$input_hex"
 }
 export -f hex2d
@@ -80,7 +80,7 @@ export -f hex2d
 # For example:
 # - `hex 65535` returns `ffff`
 hex() {
-  input_decimal=$1
+  local input_decimal=$1
   convert_number 10 16 "$input_decimal"
 }
 export -f hex
