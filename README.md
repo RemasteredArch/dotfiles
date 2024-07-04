@@ -23,10 +23,10 @@ The `scripts/` directory has two subdirectories:
     - On a fresh install, run:
 ```bash
 # Again, this is COMPLETELY UNTESTED!
-temp_dir=$(mktemp --directory -t dotfiles.install.XXXXXXXX) \
-  && curl "https://raw.githubusercontent.com/RemasteredArch/dotfiles/main/scripts/dotfiles/install.sh" -o "$temp_dir/install.sh" \
-  && chmod u+x "$temp_dir/install.sh" \
-  && "$temp_dir/install.sh"
+install_script="$(mktemp --directory -t dotfiles.install.XXXXXXXX)/install.sh" \
+  && curl "https://raw.githubusercontent.com/RemasteredArch/dotfiles/main/scripts/dotfiles/install.sh" -o "$install_script" \
+  && chmod u+x "$install_script" \
+  && "$install_script"
 # DO NOT RUN THIS if you are not certain that is is okay!
 ```
 - `scripts/dotfiles/number_conversion.sh`
