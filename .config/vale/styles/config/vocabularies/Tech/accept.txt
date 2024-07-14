@@ -1,0 +1,17 @@
+config
+toolchain
+dev
+(?i)dotfiles
+tmux
+Wikidata
+Neovim
+Gradle
+rustaceanvim
+Caskaydia
+Noto
+CMake
+Qemu
+Temurin
+wget
+gzip
+Affero
