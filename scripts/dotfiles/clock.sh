@@ -14,6 +14,8 @@
 
 # clock.sh: prints a simple clock centered on the screen with watch(1)
 
+set -eo pipefail # Quit upon any error or attempt to access unset variables
+
 has() {
   [ "$(type "$1" 2> /dev/null)" ]
 }
@@ -72,6 +74,5 @@ else
   export formatter
   export -f center_and_justify_text get_clock
 
-  # shellcheck disable=SC2016
   watch --no-title --interval 1 --exec bash -c "center_and_justify_text \"\$(get_clock \"$formatter\")\""
 fi
