@@ -45,4 +45,12 @@ center_and_justify_text() {
   unset as_array cols rows
 }
 
-center_and_justify_text "$(get_clock)"
+if [ "$1" = "-r" ] || [ "$1" = "--repeat" ]; then
+  while true; do
+    clear
+    center_and_justify_text "$(get_clock)"
+    sleep 1
+  done
+else
+  center_and_justify_text "$(get_clock)"
+fi
