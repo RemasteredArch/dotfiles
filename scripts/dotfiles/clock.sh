@@ -12,8 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License along with dotfiles. If not, see <https://www.gnu.org/licenses/>.
 
-# clock.sh: prints a simple clock centered on the screen use with watch(1):
-# watch --no-title --interval 1 ./clock.sh
+# clock.sh: prints a simple clock centered on the screen with watch(1)
 
 get_clock() {
   date +%H:%M.%S | toilet --font future
@@ -45,12 +44,11 @@ center_and_justify_text() {
   unset as_array cols rows
 }
 
-if [ "$1" = "-r" ] || [ "$1" = "--repeat" ]; then
-  while true; do
-    clear
-    center_and_justify_text "$(get_clock)"
-    sleep 1
-  done
-else
+if [ "$1" = "-n" ] || [ "$1" = "--no-repeat" ]; then
   center_and_justify_text "$(get_clock)"
+else
+  export -f center_and_justify_text get_clock
+
+  # shellcheck disable=SC2016
+  watch --no-title --interval 1 --exec bash -c 'center_and_justify_text "$(get_clock)"'
 fi
