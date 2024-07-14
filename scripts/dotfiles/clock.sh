@@ -14,7 +14,7 @@
 
 # clock.sh: prints a simple clock centered on the screen with watch(1)
 
-set -eo pipefail # Quit upon any error or attempt to access unset variables
+set -eo pipefail # Quit upon any error
 
 has() {
   [ "$(type "$1" 2> /dev/null)" ]
