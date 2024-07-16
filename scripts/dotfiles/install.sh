@@ -122,7 +122,7 @@ git clone "https://github.com/RemasteredArch/nvim-config.git"
 git clone "https://github.com/RemasteredArch/tmux-config.git"
 
 announce "Setting up home directory configs"
-config_files=(".archrc" ".arch_aliases" ".shellcheckrc" ".vimrc" ".lldbinit")
+config_files=(".archrc" ".arch_aliases" ".shellcheckrc" ".vimrc" ".lldbinit" ".mdformat")
 for file in "${config_files[@]}"; do
   ln -s "$(pwd)/$file" "$HOME/$file"
 done
