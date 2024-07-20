@@ -5,6 +5,7 @@ dev
 tmux
 Wikidata
 Neovim
+Lua
 Gradle
 rustaceanvim
 Caskaydia

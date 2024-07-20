@@ -39,7 +39,7 @@ has nvim && alias nv="nvim"
 ## Eza
 has eza && {
   alias ls="eza --oneline --group-directories-first"
-  alias lsa="ls --long --all --header --smart-group"
+  alias lsa="ls --long --all --header --smart-group --binary"
   alias tree="ls --tree"
   alias treea="lsa --tree"
 }
