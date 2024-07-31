@@ -71,3 +71,7 @@ has explorer.exe && {
   alias ex="explorer.exe"
   alias e.="explorer.exe ."
 }
+has clip.exe && alias cl="clip.exe"
+
+# Text formatting
+has fold && alias format="fold --spaces"
