@@ -45,7 +45,7 @@ sudo snap refresh
 announce "Installing various packages"
 declare -A packages
 packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb iwyu cpplint hyperfine lldb python3 python3-venv"
-packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix fd-find dasel bind9-dnsutils"
+packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix fd-find dasel bind9-dnsutils pandoc"
 packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
 packages[fun]="sl neofetch hollywood fortune-mod"
 packages[wsl]="wslu" # TODO: add a check to only install on WSL
