@@ -42,6 +42,10 @@ has eza && {
   alias lsa="ls --long --all --header --smart-group --binary"
   alias tree="ls --tree"
   alias treea="lsa --tree"
+  # While respecting `.gitignore`, display the current directory as a tree, showing the Git status
+  # of each file
+  alias treeg="tree --long --git-ignore --git \
+      --no-permissions --no-filesize --no-user --no-time"
 }
 
 ## sl

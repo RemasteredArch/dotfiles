@@ -78,4 +78,8 @@ export MANPAGER="sh -c 'sed -r \"s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g\"
 # shellcheck disable=SC1091
 [ -f "$dotfiles_dir/scripts/dotfiles/number_conversion.sh" ] && . "$dotfiles_dir/scripts/dotfiles/number_conversion.sh"
 
+# Shell completions for `cargo`
+# shellcheck disable=SC1091
+has rustc && . "$(rustc --print sysroot)/etc/bash_completion.d/cargo"
+
 unset source source_dir dotfiles_dir colors
