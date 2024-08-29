@@ -79,3 +79,6 @@ has clip.exe && alias cl="clip.exe"
 
 # Text formatting
 has fold && alias format="fold --spaces"
+
+# Adds manpages for various Rust toolchain commands, or defaults to plain-old `man`
+has rustup && alias man="rustup man"
