@@ -79,7 +79,7 @@ announce "Installing live-server"
 npm install -g live-server
 
 announce "installing Bun"
-curl -fsSL https://bun.sh/install | bash
+curl -fsSL 'https://bun.sh/install' | bash
 
 
 announce "Installing rust"
@@ -88,6 +88,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 announce "Installing rust-analyzer"
 rustup component add rust-analyzer
+
+announce "Installing Cargo packages"
+cargo install 'cargo-license' 'cargo-update'
 
 announce "Installing starship"
 curl -sS https://starship.rs/install.sh | sh
