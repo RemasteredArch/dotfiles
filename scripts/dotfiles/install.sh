@@ -69,7 +69,9 @@ sudo snap install shellcheck
 announce "Installing nvm"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
+# shellcheck disable=SC1091
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# shellcheck disable=SC1091
 [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 
 announce "Installing node.js"
@@ -84,6 +86,7 @@ curl -fsSL 'https://bun.sh/install' | bash
 
 announce "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# shellcheck disable=SC1091
 . "$HOME/.cargo/env"
 
 announce "Installing rust-analyzer"
