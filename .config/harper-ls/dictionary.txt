@@ -1,0 +1,11 @@
+CLI
+npm
+DAP
+TUI
+POSIX
+CMake
+Affero
+OpenJDK
+toolchain
+Catppuccin
+RemasteredArch
