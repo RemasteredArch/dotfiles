@@ -105,3 +105,12 @@ has rust-gdb && has cargo && {
 
 ## Git
 has git && alias git-graph='git log --graph --decorate --oneline --all'
+
+# Run a binary downloaded by `mason.nvim`
+[ -d "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin" ] && mason() {
+    local binary="$1"
+    shift # Clear out the target binary.
+
+    # Run target binary with args.
+    "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin/$binary" "$@"
+}
