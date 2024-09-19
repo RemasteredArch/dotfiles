@@ -93,7 +93,7 @@ announce "Installing rust-analyzer"
 rustup component add rust-analyzer
 
 announce "Installing Cargo packages"
-cargo install 'cargo-license' 'cargo-update' 'fd-find'
+cargo install 'cargo-license' 'cargo-update' 'fd-find' 'typst-cli'
 
 announce "Installing starship"
 curl -sS https://starship.rs/install.sh | sh

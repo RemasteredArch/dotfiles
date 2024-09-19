@@ -11,6 +11,7 @@ smtp
 POSIX
 CMake
 bot's
+Typst
 Affero
 OpenJDK
 Jaxydog
