@@ -102,3 +102,6 @@ carbo() {
 has rust-gdb && has cargo && {
     alias dbg-test='rust-gdb "$(cargo test --no-run 2>&1 >/dev/null | grep "Executable" | sed '"'"'s/.*(\(.*\))/\1/'"'"')"'
 }
+
+## Git
+has git && alias git-graph='git log --graph --decorate --oneline --all'
