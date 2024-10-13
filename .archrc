@@ -47,6 +47,8 @@ PS1="\[${colors[green]}\]\$ \u @ \H > \w > \[${colors[reset]}\]" # e.g. `$ arch 
 
 # Case-insensive tab completion
 bind 'set completion-ignore-case on'
+# Stop ringing bells in the shell
+bind 'set bell-style none'
 
 # User-installed programs
 user_bin_dir="$HOME/.local/bin"
