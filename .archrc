@@ -47,6 +47,8 @@ PS1="\[${colors[green]}\]\$ \u @ \H > \w > \[${colors[reset]}\]" # e.g. `$ arch 
 
 # Case-insensive tab completion
 bind 'set completion-ignore-case on'
+# Stop ringing bells in the shell
+bind 'set bell-style none'
 
 # User-installed programs
 user_bin_dir="$HOME/.local/bin"
@@ -58,7 +60,7 @@ unset user_bin_dir
 [ -f "$source_dir/.arch_aliases" ] && . "$source_dir/.arch_aliases"
 
 # Set default text editor to Neovim
-has nvim && export EDITOR="nvim"
+has nvim && export EDITOR="nvim" && export VISUAL="$EDITOR"
 
 # Set XDG user directories
 XDG_CONFIG_HOME="$HOME/.config"

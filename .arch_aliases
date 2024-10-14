@@ -30,15 +30,15 @@ alias relog='sudo login -p $(whoami); exit'
 
 # Program-specific aliases
 
-## Detect if a program or alias exists
+# Detect if a program or alias exists
 has() {
   [ "$(type "$1" 2> /dev/null)" ]
 }
 
-## Neovim
+# Neovim
 has nvim && alias nv="nvim"
 
-## Eza
+# Eza
 has eza && {
   alias ls="eza --oneline --group-directories-first"
   alias lsa="ls --long --all --header --smart-group --binary"
@@ -50,7 +50,7 @@ has eza && {
       --no-permissions --no-filesize --no-user --no-time"
 }
 
-## sl
+# sl
 has sl && {
   alias sl="sl -e"
   has lsa && alias las="sl"
@@ -60,17 +60,17 @@ has sl && {
   }
 }
 
-## Batcat
+# Batcat
 has batcat && alias bat="batcat"
 
-## Du/Dust
+# Du/Dust
 has du && alias dus="du --all --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
 
-## Diffs
+# Diffs
 has diff && alias gdiff="diff --unified --color=auto" # Git-style
 has nvim && alias ndiff="nvim -d" # With Neovim
 
-## WSL
+# WSL
 has wslview && alias wv="wslview"
 has notepad.exe && alias np="notepad.exe"
 has explorer.exe && {
@@ -82,14 +82,17 @@ has clip.exe && alias cl="clip.exe"
 # Text formatting
 has fold && alias format="fold --spaces"
 
-# Adds manpages for various Rust toolchain commands, or defaults to plain-old `man`
+# Adds manpages for various Rust toolchain commands, or defaults to plain-old `man`.
 has rustup && man() {
     local IFS='-'
     rustup man "$*"
 }
-carbo() {
-    has cargo || return
 
+# Joke alias for `cargo`.
+#
+# Use `carbo hydrate ...` instead of `cargo build ...`.
+# Otherwise, just use `carbo ...` instead of `cargo ...`.
+has cargo && carbo() {
     local command="$1"
     shift
 
@@ -98,12 +101,13 @@ carbo() {
     cargo "$command" "$@"
 }
 
-# Debugging Rust test binaries
+# Debugging Rust test binaries.
 has rust-gdb && has cargo && {
+    # Build in test mode, extract the binary from the output, and launch `rust-gdb` with it.
     alias dbg-test='rust-gdb "$(cargo test --no-run 2>&1 >/dev/null | grep "Executable" | sed '"'"'s/.*(\(.*\))/\1/'"'"')"'
 }
 
-## Git
+# Git
 has git && alias git-graph='git log --graph --decorate --oneline --all'
 
 # Run a binary downloaded by `mason.nvim`
