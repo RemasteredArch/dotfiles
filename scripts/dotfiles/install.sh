@@ -80,9 +80,11 @@ nvm install --lts
 announce "Installing live-server"
 npm install -g live-server
 
-announce "installing Bun"
+announce "Installing Bun"
 curl -fsSL 'https://bun.sh/install' | bash
 
+annoucnce 'Installing Deno'
+curl -fsSL 'https://deno.land/install.sh' | sh
 
 announce "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
