@@ -118,3 +118,15 @@ has git && alias git-graph='git log --graph --decorate --oneline --all'
     # Run target binary with args.
     "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin/$binary" "$@"
 }
+
+# NPM
+
+# Equivalent to `alias npr='npm run'`, except that `npr b` expands to `npm run build`.
+has npm && npr() {
+    local command="$1"
+    shift
+
+    [ "$command" = "b" ] && command="build"
+
+    npm run "$command" "$@"
+}
