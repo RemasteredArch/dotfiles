@@ -81,10 +81,12 @@ announce "Installing live-server"
 npm install -g live-server
 
 announce "Installing Bun"
-curl -fsSL 'https://bun.sh/install' | bash
+curl --fail --silent --show-error --location \
+    'https://bun.sh/install' | bash
 
 annoucnce 'Installing Deno'
-curl -fsSL 'https://deno.land/install.sh' | sh
+curl --fail --silent --show-error --location \
+    'https://deno.land/install.sh' | sh
 
 announce "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -188,6 +190,22 @@ announce "Setting up Git commit signing"
 announce "Installing pfetch"
 curl https://raw.githubusercontent.com/dylanaraps/pfetch/master/pfetch --output "$user_binary_dir/pfetch"
 chmod u+x "$user_binary_dir/pfetch"
+
+announce "Installing Docker"
+sudo install --mode '0755' --directory '/etc/apt/keyrings'
+sudo curl --fail --silent --show-error --location \
+    'https://download.docker.com/linux/ubuntu/gpg' \
+    -o '/etc/apt/keyrings/docker.asc'
+sudo chmod a+r '/etc/apt/keyrings/docker.asc'
+echo \
+    "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/etc/apt/keyrings/docker.asc] \
+    https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee '/etc/apt/sources.list.d/docker.list' > /dev/null
+sudo apt update
+sudo apt install \
+    'docker-ce' 'docker-ce-cli' 'containerd.io' 'docker-buildx-plugin' 'docker-compose-plugin'
 
 
 announce "All done! Don't forget to:"
