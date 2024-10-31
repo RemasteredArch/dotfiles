@@ -207,6 +207,16 @@ sudo apt update
 sudo apt install \
     'docker-ce' 'docker-ce-cli' 'containerd.io' 'docker-buildx-plugin' 'docker-compose-plugin'
 
+announce "Installing Act"
+temp_file="$(mktemp)"
+curl --proto '=https' --tlsv1.2 --fail --silent --show-error --location \
+    'https://raw.githubusercontent.com/nektos/act/master/install.sh' \
+    -o "$temp_file"
+chmod u+x "$temp_file"
+"$temp_file" -b "$user_binary_dir"
+rm "$temp_file"
+unset temp_file
+
 
 announce "All done! Don't forget to:"
 cat << EOF
