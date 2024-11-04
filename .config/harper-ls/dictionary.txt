@@ -4,6 +4,7 @@ DAP
 TUI
 TCP
 UTF
+JSX
 AGPL
 SPDX
 SMTP
@@ -12,6 +13,7 @@ POSIX
 CMake
 bot's
 Typst
+Astro
 Affero
 OpenJDK
 Jaxydog
