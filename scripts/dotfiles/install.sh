@@ -218,6 +218,21 @@ rm "$temp_file"
 unset temp_file
 
 
+announce "Installing cloudflared"
+sudo curl --fail --silent --show-error --location \
+    'https://pkg.cloudflare.com/cloudflare-main.gpg' \
+    -o '/etc/apt/keyrings/cloudflare-main.gpg'
+sudo chmod a+r '/etc/apt/keyrings/cloudflare-main.gpg'
+# I'll have to periodically check if there's a 24.04-specific repository.
+# Currently, Cloudflare only has 20.04 and 22.04 PPAs.
+echo \
+    "deb [signed-by=/etc/apt/keyrings/cloudflare-main.gpg] \
+    https://pkg.cloudflare.com/cloudflared jammy main" \
+    | sudo tee '/etc/apt/sources.list.d/cloudflared.list' > /dev/null
+sudo apt update
+sudo apt install 'cloudflared'
+
+
 announce "All done! Don't forget to:"
 cat << EOF
 - Enable Bash configs:
