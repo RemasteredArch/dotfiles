@@ -18,6 +18,7 @@ Affero
 OpenJDK
 Jaxydog
 Postel's
+logomark
 toolchain
 prepended
 localizer
