@@ -130,3 +130,12 @@ has npm && npr() {
 
     npm run "$command" "$@"
 }
+
+# Typst
+
+# Compile a typst document.
+has typst && typc() {
+    local file="$1"
+
+    typst compile "$file" "./out/$(basename "$file" '.typ').pdf"
+}
