@@ -18,10 +18,13 @@ Typst
 Astro
 Affero
 Penpot
+LuaJIT
 OpenJDK
 Jaxydog
+LazyVim
 Postel's
 logomark
+Tinymist
 toolchain
 prepended
 localizer
