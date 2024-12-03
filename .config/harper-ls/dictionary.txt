@@ -25,6 +25,8 @@ LazyVim
 Postel's
 logomark
 Tinymist
+websocat
+tinymist
 toolchain
 prepended
 localizer
