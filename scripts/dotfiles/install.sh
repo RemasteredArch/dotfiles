@@ -44,10 +44,13 @@ sudo snap refresh
 
 announce "Installing various packages"
 declare -A packages
+# Ubuntu's Watchman version is severely out of date (2017).
+#
+# Maybe the install would be better suited to Updater pulling DPKG packages from GitHub releases?
 packages[dev_tools]="openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb\
     iwyu cpplint hyperfine lldb python3 python3-venv mingw-w64 watchman usbutils"
 packages[utilities]="tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen dos2unix dasel bind9-dnsutils pandoc"
-packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuiccin
+packages[theming]="gnome-themes-extra lxappearance" # TODO: make intall & update script for Catppuccin
 packages[fun]="sl neofetch hollywood fortune-mod cowsay"
 packages[wsl]="wslu" # TODO: add a check to only install on WSL
 packages[tor]="tor tor-geoipdb torsocks"
@@ -98,7 +101,7 @@ announce "Installing rust-analyzer"
 rustup component add rust-analyzer
 
 announce "Installing Cargo packages"
-cargo install 'cargo-license' 'cargo-update' 'fd-find' 'typst-cli'
+cargo install 'cargo-license' 'cargo-update' 'fd-find' 'typst-cli' 'bacon'
 
 announce "Installing starship"
 curl -sS https://starship.rs/install.sh | sh
