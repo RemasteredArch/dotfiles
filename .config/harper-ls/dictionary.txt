@@ -19,6 +19,7 @@ Astro
 Affero
 Penpot
 LuaJIT
+clangd
 OpenJDK
 Jaxydog
 LazyVim
@@ -35,6 +36,7 @@ Minecraft
 formatter
 Catppuccin
 performant
+filesystem
 recalibrates
 strikethrough
 RemasteredArch
