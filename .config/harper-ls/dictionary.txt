@@ -1,3 +1,4 @@
+UI
 CLI
 npm
 DAP
@@ -6,6 +7,8 @@ TCP
 UTF
 JSX
 Zod
+UIs
+XDG
 AGPL
 SPDX
 SMTP
