@@ -112,11 +112,22 @@ has git && alias git-graph='git log --graph --decorate --oneline --all'
 
 # Run a binary downloaded by `mason.nvim`
 [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin" ] && mason() {
+    local bin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin"
+
     local binary="$1"
     shift # Clear out the target binary.
 
-    # Run target binary with args.
-    "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin/$binary" "$@"
+    case "$binary" in
+        # List out the available binaries.
+        ls | list )
+            \ls -1 --almost-all "$bin_dir"
+            ;;
+
+        # Run target binary with args.
+        * )
+            "$bin_dir/$binary" "$@"
+            ;;
+    esac
 }
 
 # NPM
