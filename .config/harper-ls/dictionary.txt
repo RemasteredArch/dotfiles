@@ -19,6 +19,7 @@ CMake
 bot's
 Typst
 Astro
+shfmt
 Affero
 Penpot
 LuaJIT
@@ -26,11 +27,14 @@ clangd
 OpenJDK
 Jaxydog
 LazyVim
+BusyBox
+yamlfmt
 Postel's
 logomark
 Tinymist
 websocat
 tinymist
+mdformat
 toolchain
 prepended
 localizer
@@ -40,6 +44,9 @@ formatter
 Catppuccin
 performant
 filesystem
+ShellCheck
+actionlint
+formatters
 recalibrates
 strikethrough
 RemasteredArch
