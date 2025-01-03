@@ -47,7 +47,9 @@ filesystem
 ShellCheck
 actionlint
 formatters
+endianness
 recalibrates
 strikethrough
+Instinctually
 RemasteredArch
 retransmission
