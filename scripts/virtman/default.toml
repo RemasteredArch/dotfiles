@@ -11,6 +11,7 @@ disks = "disks"   # Where to store virutal disks ($data/$disks)
 name = "ubuntu"
 reinstall = false                          # Whether to boot the install ISO and set appropriate boot parameters every time
 command = "qemu-system-x86_64"             # As will be entered into a Bash shell by virtman
+cores = 4                                  # CPU cores
 memory = "4G"                              # Allocated RAM
 aio = "io_uring"                           # I/O interface (threads, native, or io_uring)
 disk = "ubuntu.qcow"                       # Will be stored in ${directories[disks]}/$disk

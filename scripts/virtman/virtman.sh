@@ -236,6 +236,7 @@ declare -A vm
 vm[name]=$(read_config "name")
 vm[reinstall]=${opts[install]:-$(read_config "reinstall")}
 vm[command]=$(read_config "command") # replace with `kvm`?
+vm[cores]=$(read_config "cores")
 vm[memory]=$(read_config "memory")
 vm[aio]=$(read_config "aio")
 vm[disk]=$(read_config "disk")
@@ -425,6 +426,7 @@ read -rp 'Hit enter to begin startup'
 sudo "${vm[command]}" \
   -cpu host \
   -accel kvm \
+  -smp "${vm[cores]}" \
   -m "${vm[memory]}" \
   -name "${vm[name]}" \
   -drive "file=${vm[disk_path]},media=disk,aio=${vm[aio]},format=${vm[format]}" \
