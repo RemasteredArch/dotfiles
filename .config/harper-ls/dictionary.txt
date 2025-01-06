@@ -9,6 +9,8 @@ JSX
 Zod
 UIs
 XDG
+WSL
+GPG
 AGPL
 SPDX
 SMTP
