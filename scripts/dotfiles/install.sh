@@ -102,13 +102,14 @@ rustup component add rust-analyzer
 
 announce "Installing Cargo packages"
 cargo install \
+    'bacon' \
+    'cargo-binstall' \
+    'cargo-expand' \
     'cargo-license' \
     'cargo-update' \
     'fd-find' \
-    'typst-cli' \
-    'bacon' \
     'flamegraph' \
-    'cargo-expand'
+    'typst-cli'
 
 announce "Installing starship"
 curl -sS https://starship.rs/install.sh | sh
