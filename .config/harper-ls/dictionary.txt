@@ -51,9 +51,12 @@ ShellCheck
 actionlint
 formatters
 endianness
+integrable
 recalibrates
 deduplicated
 strikethrough
 Instinctually
 RemasteredArch
 retransmission
+antiderivative
+antiderivatives
