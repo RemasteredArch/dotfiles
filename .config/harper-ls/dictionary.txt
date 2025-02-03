@@ -38,6 +38,7 @@ Tinymist
 websocat
 tinymist
 mdformat
+miswrote
 toolchain
 prepended
 localizer
