@@ -39,6 +39,7 @@ websocat
 tinymist
 mdformat
 miswrote
+massless
 toolchain
 prepended
 localizer
@@ -53,8 +54,11 @@ actionlint
 formatters
 endianness
 integrable
+noninertial
 recalibrates
 deduplicated
+frictionless
+inextensible
 strikethrough
 Instinctually
 RemasteredArch
