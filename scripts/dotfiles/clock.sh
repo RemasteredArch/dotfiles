@@ -17,62 +17,62 @@
 set -eo pipefail # Quit upon any error
 
 has() {
-  [ "$(type "$1" 2> /dev/null)" ]
+    [ "$(type "$1" 2> /dev/null)" ]
 }
 
 get_formatter() {
-  has toilet && {
-    echo "toilet"
-    return
-  }
-  has figlet && {
-    echo "figlet"
-    return
-  }
+    has toilet && {
+        echo "toilet"
+        return
+    }
+    has figlet && {
+        echo "figlet"
+        return
+    }
 
-  echo "figlet or toilet not detected! Please install one." >&2
-  exit 1
+    echo "figlet or toilet not detected! Please install one." >&2
+    exit 1
 }
 
 get_clock() {
-  local formatter="$1" # "toilet" or "figlet"
+    local formatter="$1" # "toilet" or "figlet"
 
-  date +%H:%M.%S | "$formatter" --font future
+    date '+%H:%M.%S' | "$formatter" --font 'future'
 }
 
 # Assumes that all lines will be of the same length
 center_and_justify_text() {
-  local text="$1"
-  readarray -t as_array < <(echo "$text")
+    local text="$1"
+    readarray -t as_array < <(echo "$text")
 
-  declare -i cols
-  declare -i rows
-  cols=$(tput cols)
-  rows=$(tput lines)
+    declare -i cols
+    declare -i rows
+    cols=$(tput cols)
+    rows=$(tput lines)
 
-  local line_length="${#as_array[0]}"
-  local horizontal_padding=$(((cols - line_length) / 2))
+    local line_length="${#as_array[0]}"
+    local horizontal_padding=$(((cols - line_length) / 2))
 
-  local line_count=${#as_array[@]}
-  local vertical_padding=$(((rows - line_count) / 2))
+    local line_count=${#as_array[@]}
+    local vertical_padding=$(((rows - line_count) / 2))
 
-  for ((i = 0; i < vertical_padding; i++)); do
-    echo
-  done
-  for i in "${as_array[@]}"; do
-    printf "%${horizontal_padding}s%s\n" " " "$i"
-  done
+    for ((i = 0; i < vertical_padding; i++)); do
+        echo
+    done
+    for i in "${as_array[@]}"; do
+        printf "%${horizontal_padding}s%s\n" " " "$i"
+    done
 
-  unset as_array cols rows
+    unset as_array cols rows
 }
 
 formatter=$(get_formatter)
 
 if [ "$1" = "-n" ] || [ "$1" = "--no-repeat" ]; then
-  center_and_justify_text "$(get_clock "$formatter")"
+    center_and_justify_text "$(get_clock "$formatter")"
 else
-  export formatter
-  export -f center_and_justify_text get_clock
+    export formatter
+    export -f center_and_justify_text get_clock
 
-  watch --no-title --interval 1 --exec bash -c "center_and_justify_text \"\$(get_clock \"$formatter\")\""
+    watch --no-title --interval 1 --exec bash -c "center_and_justify_text \"\$(get_clock \"$formatter\")\""
 fi

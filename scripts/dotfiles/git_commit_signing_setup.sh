@@ -23,10 +23,10 @@ script[version]="v0.1"
 script[authors]="RemasteredArch 2024"
 
 set_style() {
-  local name="$1"
-  local style="$2"
+    local name="$1"
+    local style="$2"
 
-  text[$name]="\e[${style}m"
+    text[$name]="\e[${style}m"
 }
 
 declare -A text
@@ -38,35 +38,35 @@ set_style white 97
 set_style highlight_gray 100
 
 announce() {
-  echo -e "\n${text[reset]}${text[white]}${text[highlight_gray]}$*${text[reset]}"
+    echo -e "\n${text[reset]}${text[white]}${text[highlight_gray]}$*${text[reset]}"
 }
 
 help_entry() {
-  local short_form="$1"
-  local long_form="$2"
-  local description="$3"
-  local long_form_length=${4:-13}
+    local short_form="$1"
+    local long_form="$2"
+    local description="$3"
+    local long_form_length=${4:-13}
 
-  local args=$#
-  shift $((args < 4 ? args : 4)) # min($#, 4)
+    local args=$#
+    shift $((args < 4 ? args : 4)) # min($#, 4)
 
-  echo "  $short_form ${text[faint]}|${text[reset]} $(printf "%-${long_form_length}s" "$long_form")    ${text[faint]}$description${text[reset]}"
+    echo "  $short_form ${text[faint]}|${text[reset]} $(printf "%-${long_form_length}s" "$long_form")    ${text[faint]}$description${text[reset]}"
 
-  [ -n "$1" ] || return 0
+    [ -n "$1" ] || return 0
 
-  local default_prefix="    (Default: "
-  echo -n "${text[faint]}$default_prefix'$1'"
-  shift
-
-  while [ -n "$1" ]; do
-    printf ",\n%${#default_prefix}s%s" ' ' "'$1'"
+    local default_prefix="    (Default: "
+    echo -n "${text[faint]}$default_prefix'$1'"
     shift
-  done
-  echo ")${text[reset]}"
+
+    while [ -n "$1" ]; do
+        printf ",\n%${#default_prefix}s%s" ' ' "'$1'"
+        shift
+    done
+    echo ")${text[reset]}"
 }
 
 help() {
-  echo -e "$(cat << EOF
+    echo -e "$(cat << EOF
 ${text[bold]}${script[name]}${text[reset]} ${text[italic]}${script[version]}${text[reset]}:
   A script to create and configure commit signing with Git. Designed for use on Ubuntu 24.04.
 
@@ -90,46 +90,46 @@ License:${text[faint]}
   You should have received a copy of the GNU General Public License along with
   dotfiles. If not, see <https://www.gnu.org/licenses/>.${text[reset]}
 EOF
-  )"
+    )"
 }
 
 version() {
-  echo "${script[version]}"
+    echo "${script[version]}"
 }
 
 get_parameter() {
-  local parameter="$1"
-  local default="$2"
+    local parameter="$1"
+    local default="$2"
 
-  read -rp "Enter $parameter for GPG key (default: $default): " response
+    read -rp "Enter $parameter for GPG key (default: $default): " response
 
-  echo "${response:=$default}"
+    echo "${response:=$default}"
 
-  unset response
+    unset response
 }
 
 
 [ "$1" != "-l" ] && [ "$1" != "--local" ] && git_scope="--global"
 [ "$1" = "-h" ] || [ "$1" = "--help" ] && {
-  help
-  exit 0
+    help
+    exit 0
 }
 [ "$1" = "-v" ] || [ "$1" = "--version" ] && {
-  version
-  exit 0
+    version
+    exit 0
 }
 
 
 announce "Getting parameters for GPG key"
 
 while true; do
-  # shellcheck disable=SC2086
-  name=$(get_parameter name "$(git config $git_scope user.name)")
-  # shellcheck disable=SC2086
-  email=$(get_parameter email "$(git config $git_scope user.email)")
-  comment=$(get_parameter comment "Git signing key ($(hostname))")
-  duration=$(get_parameter duration "1y")
-  user_id="$name ($comment) <$email>"
+    # shellcheck disable=SC2086
+    name=$(get_parameter name "$(git config $git_scope user.name)")
+    # shellcheck disable=SC2086
+    email=$(get_parameter email "$(git config $git_scope user.email)")
+    comment=$(get_parameter comment "Git signing key ($(hostname))")
+    duration=$(get_parameter duration "1y")
+    user_id="$name ($comment) <$email>"
 
 cat << EOF
 About to run:
@@ -137,8 +137,8 @@ About to run:
 
 EOF
 
-  read -rp "Is this correct? (y/n) " response
-  [ "$response" = "y" ] && break
+    read -rp "Is this correct? (y/n) " response
+    [ "$response" = "y" ] && break
 done
 
 
@@ -150,13 +150,13 @@ gpg --quick-generate-key "$user_id" rsa4096 sign "$duration"
 announce "Fetching key"
 
 gpg_key_id=$( \
-  gpg \
-    --with-colons \
-    --keyid-format=long \
-    --list-secret-keys "=$user_id" \
-   | grep \
-    --only-matching \
-    --perl-regexp 'sec:([^:]*:){3}\K[^:]+(?=:)'
+    gpg \
+        --with-colons \
+        --keyid-format=long \
+        --list-secret-keys "=$user_id" \
+      | grep \
+        --only-matching \
+        --perl-regexp 'sec:([^:]*:){3}\K[^:]+(?=:)'
 )
 
 
@@ -170,12 +170,12 @@ echo "This public key is what your Git host will need to verify your commits"
 announce "Enabling commit signing with secret key"
 
 git_config() {
-  local config="$1"
-  local value="$2"
+    local config="$1"
+    local value="$2"
 
-  local command="git config $git_scope $config $value"
-  echo "- $command"
-  eval "$command"
+    local command="git config $git_scope $config $value"
+    echo "- $command"
+    eval "$command"
 }
 
 echo "Running..."
