@@ -17,15 +17,15 @@
 
 # General aliases
 
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias cdp="cd -P ." # Resolve symlinks in the current working path
-alias cls="clear"
-alias clsa="clear; lsa"
-alias :q="exit"
-alias su="sudo --login"
-alias hg="history | grep"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias cdp='cd -P .' # Resolve symlinks in the current working path
+alias cls='clear'
+alias clsa='clear; lsa'
+alias :q='exit'
+alias su='sudo --login'
+alias hg='history | grep'
 alias relog='sudo login -p $(whoami); exit'
 
 # Program-specific aliases
@@ -40,47 +40,47 @@ has nvim && alias nv="nvim"
 
 # Eza
 has eza && {
-  alias ls="eza --oneline --group-directories-first"
-  alias lsa="ls --long --all --header --smart-group --binary"
-  alias tree="ls --tree"
-  alias treea="lsa --tree"
+  alias ls='eza --oneline --group-directories-first'
+  alias lsa='ls --long --all --header --smart-group --binary'
+  alias tree='ls --tree'
+  alias treea='lsa --tree'
   # While respecting `.gitignore`, display the current directory as a tree, showing the Git status
   # of each file
-  alias treeg="tree --long --git-ignore --git \
-      --no-permissions --no-filesize --no-user --no-time"
+  alias treeg='tree --long --git-ignore --git \
+      --no-permissions --no-filesize --no-user --no-time'
 }
 
 # sl
 has sl && {
-  alias sl="sl -e"
-  has lsa && alias las="sl"
-  has clsa && {
-    alias csla="sl"
-    alias clas="sl"
-  }
+    alias sl='sl -e'
+    has lsa && alias las='sl'
+    has clsa && {
+        alias csla='sl'
+        alias clas='sl'
+    }
 }
 
 # Batcat
-has batcat && alias bat="batcat"
+has batcat && alias bat='batcat'
 
 # Du/Dust
-has du && alias dus="du --all --human-readable --max-depth=1 | sort --human-numeric-sort --reverse"
+has du && alias dus='du --all --human-readable --max-depth=1 | sort --human-numeric-sort --reverse'
 
 # Diffs
-has diff && alias gdiff="diff --unified --color=auto" # Git-style
-has nvim && alias ndiff="nvim -d" # With Neovim
+has diff && alias gdiff='diff --unified --color=auto' # Git-style
+has nvim && alias ndiff='nvim -d' # With Neovim
 
 # WSL
-has wslview && alias wv="wslview"
-has notepad.exe && alias np="notepad.exe"
+has wslview && alias wv='wslview'
+has notepad.exe && alias np='notepad.exe'
 has explorer.exe && {
-  alias ex="explorer.exe"
-  alias e.="explorer.exe ."
+    alias ex='explorer.exe'
+    alias e.='explorer.exe .'
 }
-has clip.exe && alias cl="clip.exe"
+has clip.exe && alias cl='clip.exe'
 
 # Text formatting
-has fold && alias format="fold --spaces"
+has fold && alias format='fold --spaces'
 
 # Adds manpages for various Rust toolchain commands, or defaults to plain-old `man`.
 has rustup && man() {
@@ -96,7 +96,7 @@ has cargo && carbo() {
     local command="$1"
     shift
 
-    [ "$command" = "hydrate" ] && command="build"
+    [ "$command" = 'hydrate' ] && command='build'
 
     cargo "$command" "$@"
 }
@@ -137,14 +137,14 @@ has npm && npr() {
     local command="$1"
     shift
 
-    [ "$command" = "b" ] && command="build"
+    [ "$command" = 'b' ] && command='build'
 
     npm run "$command" "$@"
 }
 
 # Typst
 
-# Compile a typst document.
+# Compile a Typst document.
 has typst && typc() {
     local file="$1"
 
