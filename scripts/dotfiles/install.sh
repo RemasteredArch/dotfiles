@@ -112,20 +112,27 @@ cargo install \
     'typst-cli'
 
 announce 'Installing Starship'
-curl -sS 'https://starship.rs/install.sh' | sh
+curl --silent --show-error 'https://starship.rs/install.sh' | sh
 
 announce 'Installing Neovim'
-sudo add-apt-repository ppa:neovim-ppa/unstable \
+sudo add-apt-repository 'ppa:neovim-ppa/unstable' \
 && sudo apt update \
-&& sudo apt install neovim
+&& sudo apt install 'neovim'
 
 announce 'Installing GitHub CLI'
-sudo mkdir -p -m 755 /etc/apt/keyrings \
-&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-&& sudo apt update \
-&& sudo apt install gh
+sudo mkdir -p -m 755 '/etc/apt/keyrings' \
+    && wget -qO- 'https://cli.github.com/packages/githubcli-archive-keyring.gpg' \
+        | sudo tee '/etc/apt/keyrings/githubcli-archive-keyring.gpg' \
+        > /dev/null \
+    && sudo chmod go+r '/etc/apt/keyrings/githubcli-archive-keyring.gpg' \
+    && echo "deb [arch=$(dpkg --print-architecture) \
+        signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] \
+        https://cli.github.com/packages \
+        stable main" \
+        | sudo tee '/etc/apt/sources.list.d/github-cli.list' \
+        > /dev/null \
+    && sudo apt update \
+    && sudo apt install 'gh'
 
 announce 'Updating again'
 sudo apt update && sudo apt upgrade
