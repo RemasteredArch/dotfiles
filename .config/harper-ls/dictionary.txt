@@ -12,11 +12,13 @@ XDG
 WSL
 GPG
 TiB
+NII
 AGPL
 SPDX
 SMTP
 smtp
 YAML
+NIII
 POSIX
 CMake
 bot's
@@ -46,6 +48,7 @@ localizer
 WebSocket
 Minecraft
 formatter
+photogate
 Catppuccin
 performant
 filesystem
