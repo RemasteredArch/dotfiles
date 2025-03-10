@@ -19,6 +19,8 @@ SMTP
 smtp
 YAML
 NIII
+Qemu
+tmux
 POSIX
 CMake
 bot's
@@ -34,6 +36,7 @@ Jaxydog
 LazyVim
 BusyBox
 yamlfmt
+WezTerm
 Postel's
 logomark
 Tinymist
