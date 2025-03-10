@@ -64,6 +64,11 @@ I organize some other configurations under their own repositories:
 - My tmux configuration,
   available at [`tmux-config`](https://github.com/RemasteredArch/tmux-config)
   (maps to `~/.config/tmux/`).
+- My WezTerm configuration,
+  available at [`wezterm_config`](https://github.com/RemasteredArch/wezterm_config)
+  (maps to `~/.config/wezterm/`).
+  - Not installed by `install.sh`,
+    because I currently only use WezTerm on Windows.
 - My update script,
   available at [`Updater`](https://github.com/RemasteredArch/Updater).
 
