@@ -59,8 +59,15 @@ unset user_bin_dir
 # Enable various aliases
 [ -f "$source_dir/.arch_aliases" ] && . "$source_dir/.arch_aliases"
 
-# Set default text editor to Neovim
-has nvim && export EDITOR="nvim" && export VISUAL="$EDITOR"
+# Set default text editor to Neovim.
+#
+# To apply these in `sudo` commands, include them in `sudo visudo`. For example, to use Neovim when
+# editing systemd unit files:
+#
+# ```
+# Defaults:%sudo env_keep += "SYSTEMD_EDITOR"
+# ```
+has nvim && export EDITOR="nvim" && export VISUAL="$EDITOR" && export SYSTEMD_EDITOR="$EDITOR"
 
 # Set XDG user directories
 XDG_CONFIG_HOME="$HOME/.config"
