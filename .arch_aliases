@@ -148,5 +148,7 @@ has npm && npr() {
 has typst && typc() {
     local file="$1"
 
+    [ -d './out/' ] || mkdir './out/'
+
     typst compile "$file" "./out/$(basename "$file" '.typ').pdf"
 }
