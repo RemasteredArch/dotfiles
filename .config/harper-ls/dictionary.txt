@@ -31,6 +31,7 @@ Affero
 Penpot
 LuaJIT
 clangd
+Desmos
 OpenJDK
 Jaxydog
 LazyVim
