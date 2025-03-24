@@ -27,6 +27,7 @@ bot's
 Typst
 Astro
 shfmt
+Māori
 Affero
 Penpot
 LuaJIT
