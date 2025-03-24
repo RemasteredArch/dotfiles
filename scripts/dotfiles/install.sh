@@ -111,6 +111,7 @@ cargo binstall \
     'fd-find' \
     'flamegraph' \
     'tokei' \
+    'tree-sitter-cli' \
     'typst-cli'
 
 announce 'Installing Starship'
