@@ -64,7 +64,10 @@ has sl && {
 has batcat && alias bat='batcat'
 
 # Du/Dust
-has du && alias dus='du --all --human-readable --max-depth=1 | sort --human-numeric-sort --reverse'
+has du && dus() {
+    local directory="${1:-.}"
+    du --all --human-readable --max-depth=1 "$directory" | sort --human-numeric-sort --reverse
+}
 
 # Diffs
 has diff && alias gdiff='diff --unified --color=auto' # Git-style
