@@ -155,3 +155,10 @@ has typst && typc() {
 
     typst compile "$file" "./out/$(basename "$file" '.typ').pdf"
 }
+
+# Fuzzy finding
+
+has fzf && fzd() {
+    local directory="${1:-.}"
+    cd "$(find "$directory" -type d | fzf)" || return
+}
