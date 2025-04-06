@@ -1,4 +1,5 @@
 UI
+SI
 CLI
 npm
 DAP
@@ -14,6 +15,7 @@ GPG
 TiB
 NII
 DNE
+NaN
 AGPL
 SPDX
 SMTP
@@ -40,6 +42,8 @@ LazyVim
 BusyBox
 yamlfmt
 WezTerm
+sciutil
+structs
 Postel's
 logomark
 Tinymist
@@ -68,9 +72,11 @@ recalibrates
 deduplicated
 frictionless
 inextensible
+pseudovector
 strikethrough
 Instinctually
 RemasteredArch
 retransmission
 antiderivative
 antiderivatives
+reimplementation
