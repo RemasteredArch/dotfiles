@@ -16,6 +16,7 @@ TiB
 NII
 DNE
 NaN
+LOs
 AGPL
 SPDX
 SMTP
@@ -44,6 +45,7 @@ yamlfmt
 WezTerm
 sciutil
 structs
+summand
 Postel's
 logomark
 Tinymist
@@ -59,6 +61,8 @@ WebSocket
 Minecraft
 formatter
 photogate
+Sanderson
+integrand
 Catppuccin
 performant
 filesystem
@@ -68,11 +72,14 @@ formatters
 endianness
 integrable
 noninertial
+subinterval
 recalibrates
 deduplicated
 frictionless
 inextensible
 pseudovector
+subintervals
+Denormalized
 strikethrough
 Instinctually
 RemasteredArch
