@@ -17,6 +17,7 @@ NII
 DNE
 NaN
 LOs
+OOP
 AGPL
 SPDX
 SMTP
@@ -46,6 +47,7 @@ WezTerm
 sciutil
 structs
 summand
+unsized
 Postel's
 logomark
 Tinymist
@@ -63,6 +65,7 @@ formatter
 photogate
 Sanderson
 integrand
+sciutil's
 Catppuccin
 performant
 filesystem
@@ -71,8 +74,10 @@ actionlint
 formatters
 endianness
 integrable
+integrands
 noninertial
 subinterval
+nonnegative
 recalibrates
 deduplicated
 frictionless
@@ -86,4 +91,5 @@ RemasteredArch
 retransmission
 antiderivative
 antiderivatives
+unrepresentable
 reimplementation
