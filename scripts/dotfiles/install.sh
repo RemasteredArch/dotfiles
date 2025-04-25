@@ -109,6 +109,7 @@ cargo binstall \
     'cargo-update' \
     'fd-find' \
     'flamegraph' \
+    'sendme' \
     'tokei' \
     'tree-sitter-cli' \
     'typst-cli' \
