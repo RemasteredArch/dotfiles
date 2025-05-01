@@ -150,10 +150,11 @@ has npm && npr() {
 # Compile a Typst document.
 has typst && typc() {
     local file="$1"
+    shift
 
     [ -d './out/' ] || mkdir './out/'
 
-    typst compile "$file" "./out/$(basename "$file" '.typ').pdf"
+    typst compile "$file" "./out/$(basename "$file" '.typ').pdf" "$@"
 }
 
 # Fuzzy finding
