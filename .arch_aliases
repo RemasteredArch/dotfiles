@@ -32,7 +32,7 @@ alias relog='sudo login -p $(whoami); exit'
 
 # Detect if a program or alias exists
 has() {
-  [ "$(type "$1" 2> /dev/null)" ]
+    [ "$(type "$1" 2> /dev/null)" ]
 }
 
 # Neovim
@@ -40,13 +40,13 @@ has nvim && alias nv="nvim"
 
 # Eza
 has eza && {
-  alias ls='eza --oneline --group-directories-first'
-  alias lsa='ls --long --all --header --smart-group --binary'
-  alias tree='ls --tree'
-  alias treea='lsa --tree'
-  # While respecting `.gitignore`, display the current directory as a tree, showing the Git status
-  # of each file
-  alias treeg='tree --long --git-ignore --git \
+    alias ls='eza --oneline --group-directories-first'
+    alias lsa='ls --long --all --header --smart-group --binary'
+    alias tree='ls --tree'
+    alias treea='lsa --tree'
+    # While respecting `.gitignore`, display the current directory as a tree, showing the Git status
+    # of each file
+    alias treeg='tree --long --git-ignore --git \
       --no-permissions --no-filesize --no-user --no-time'
 }
 

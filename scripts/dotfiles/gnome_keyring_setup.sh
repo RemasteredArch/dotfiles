@@ -16,7 +16,7 @@ text_reset="\e[0m"
 text_bold="\e[97m\e[100m\e[1m" # bold white text on a gray background
 
 announce() {
-  echo -e "\n$text_reset$text_bold$*$text_reset"
+    echo -e "\n$text_reset$text_bold$*$text_reset"
 }
 
 announce "This script will append entries for gnome-keyring to /etc/pam.d/login and /etc/pam.d/passwd. Please read the source code of this script and confirm that no such similar passages already exist in the files."
