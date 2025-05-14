@@ -163,3 +163,8 @@ has fzf && fzd() {
     local directory="${1:-.}"
     cd "$(find "$directory" -type d | fzf)" || return
 }
+
+# Imagemagick
+
+# Because for some reason, this is how Ubuntu packages Imagemagick.
+has convert && alias magick='convert'
