@@ -2,6 +2,7 @@ AGPL
 Affero
 Astro
 BNF
+BlueTools
 BusyBox
 CLI
 CMake
@@ -12,8 +13,11 @@ Denormalized
 Desmos
 EBCDIC
 GPG
+GPX
 HW
 IEC
+IVP
+IVPs
 Instinctually
 JSX
 Jaxydog
@@ -27,13 +31,17 @@ NIII
 NaN
 OOP
 OpenJDK
+PDE
+PDEs
 POSIX
 Pappus
 Penpot
 Postel's
+Postgres
 Qemu
 RemasteredArch
 SI
+SOHCAHTOA
 SPDX
 SQL's
 Sanderson
@@ -57,6 +65,7 @@ antiderivative
 antiderivatives
 approximable
 arclength
+asymptote
 bot's
 centroid
 clangd
@@ -69,6 +78,7 @@ filesystem
 formatter
 formatters
 frictionless
+implementors
 inextensible
 integrable
 integrand
@@ -107,6 +117,8 @@ syntaxes
 tinymist
 tmux
 toolchain
+uncomposed
+undercooked
 unrepresentable
 unsized
 untrusted
