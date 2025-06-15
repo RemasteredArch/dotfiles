@@ -104,6 +104,7 @@ rustup component add rust-analyzer
 announce 'Installing Cargo packages'
 cargo install 'cargo-binstall'
 cargo binstall \
+    'cargo-edit' \
     'cargo-expand' \
     'cargo-license' \
     'cargo-update' \
