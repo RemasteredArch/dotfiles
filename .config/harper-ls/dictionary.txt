@@ -45,9 +45,11 @@ SOHCAHTOA
 SPDX
 SQL's
 Sanderson
+SemVer
 ShellCheck
 TCP
 TUI
+Taplo
 TiB
 Typst
 UI
@@ -74,6 +76,7 @@ deduplicated
 deserialization
 destructuring
 endianness
+falsy
 filesystem
 formatter
 formatters
