@@ -50,7 +50,7 @@ declare -A packages
 packages[dev_tools]='openjdk-21-jdk gcc g++ clang ninja-build cmake shellcheck build-essential gdb\
     iwyu cpplint hyperfine lldb python3 python3-venv mingw-w64 watchman usbutils lld golang'
 packages[utilities]='tealdeer unzip eza bat jq ripgrep fzf x11-apps mesa-utils htop btop screen\
-    dos2unix dasel bind9-dnsutils net-tools pandoc uniutils baobab'
+    dos2unix dasel bind9-dnsutils net-tools pandoc uniutils baobab b3sum'
 packages[theming]='gnome-themes-extra lxappearance' # TODO: make intall & update script for Catppuccin
 packages[fun]='sl neofetch hollywood fortune-mod cowsay'
 packages[wsl]='wslu' # TODO: add a check to only install on WSL
